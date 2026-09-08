@@ -101,7 +101,7 @@ export default function App() {
     }
 
     // Preloaded fast fallback if available
-    const preloaded = PRELOADED_GUNSAN_DATA[tab.gid];
+    const preloaded = PRELOADED_GUNSAN_DATA[tab.id] || PRELOADED_GUNSAN_DATA[tab.gid];
     if (preloaded && preloaded.length > 0 && !force) {
       setItems(preloaded);
       setIsPreloadedFallback(true);
