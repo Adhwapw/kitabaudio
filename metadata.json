@@ -1,0 +1,6 @@
+{
+  "name": "Kitab Audio Tier List",
+  "description": "Aplikasi katalog dan tier list audio audiophile modern mobile-first yang disinkronkan otomatis dari Google Spreadsheet teman tanpa Google API.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
