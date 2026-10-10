@@ -40,7 +40,7 @@ export const SheetConfigModal: React.FC<SheetConfigModalProps> = ({ isOpen, onCl
     try {
       // Uji baca tab pertama langsung dari browser
       const result = await syncTab(parsed.gid || '0', { sheetId: parsed.sheetId, force: true });
-      if (result.source === 'live' || result.source === 'server') {
+      if (result.source === 'live') {
         setSheetId(parsed.sheetId);
         setSuccess(`Berhasil! Terbaca ${result.items.length} perangkat dari spreadsheet.`);
         setTimeout(onSaved, 1200);

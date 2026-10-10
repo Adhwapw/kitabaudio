@@ -1,6 +1,6 @@
 import React from 'react';
 import { BookOpenText, Home, LayoutGrid, Layers, GitCompareArrows, Info } from 'lucide-react';
-import { Route, navigate, PageId } from '../../router.ts';
+import { Route, navigate, routeToPath, handleLinkClick, PageId } from '../../router.ts';
 import { SyncBadge } from '../SyncBadge.tsx';
 import { SyncResult } from '../../utils/sheetSync.ts';
 import { TabStatus } from '../../data/sheetStore.ts';
@@ -30,8 +30,9 @@ export const SiteHeader: React.FC<SiteHeaderProps> = ({
     <header className="sticky top-0 z-40 border-b border-ink/10 bg-paper/90 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6">
         {/* Brand */}
-        <button
-          onClick={() => navigate({ page: 'home' })}
+        <a
+          href={routeToPath({ page: 'home' })}
+          onClick={(e) => handleLinkClick(e, { page: 'home' })}
           className="flex items-center gap-2.5 text-left"
         >
           <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-ink text-paper shadow-sm">
@@ -41,7 +42,7 @@ export const SiteHeader: React.FC<SiteHeaderProps> = ({
             <span className="font-display block text-lg font-bold tracking-tight">Kitab Audio</span>
             <span className="hidden text-[11px] font-medium text-ink-faint sm:block">Tier list audiophile Indonesia</span>
           </span>
-        </button>
+        </a>
 
         {/* Desktop nav */}
         <nav className="hidden items-center gap-1 md:flex">
@@ -49,9 +50,10 @@ export const SiteHeader: React.FC<SiteHeaderProps> = ({
             const active = route.page === item.id;
             const Icon = item.icon;
             return (
-              <button
+              <a
                 key={item.id}
-                onClick={() => navigate({ page: item.id })}
+                href={routeToPath({ page: item.id })}
+                onClick={(e) => handleLinkClick(e, { page: item.id })}
                 className={`relative flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition ${
                   active ? 'bg-ink text-paper' : 'text-ink-soft hover:bg-ink/5 hover:text-ink'
                 }`}
@@ -63,7 +65,7 @@ export const SiteHeader: React.FC<SiteHeaderProps> = ({
                     {compareCount}
                   </span>
                 )}
-              </button>
+              </a>
             );
           })}
         </nav>

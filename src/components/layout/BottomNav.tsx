@@ -1,6 +1,6 @@
 import React from 'react';
 import { Home, LayoutGrid, Layers, GitCompareArrows, Info } from 'lucide-react';
-import { Route, navigate, PageId } from '../../router.ts';
+import { Route, routeToPath, handleLinkClick, PageId } from '../../router.ts';
 
 interface BottomNavProps {
   route: Route;
@@ -23,9 +23,10 @@ export const BottomNav: React.FC<BottomNavProps> = ({ route, compareCount }) => 
           const active = route.page === item.id;
           const Icon = item.icon;
           return (
-            <button
+            <a
               key={item.id}
-              onClick={() => navigate({ page: item.id })}
+              href={routeToPath({ page: item.id })}
+              onClick={(e) => handleLinkClick(e, { page: item.id })}
               className={`relative flex flex-col items-center gap-1 py-2.5 text-[10px] font-bold transition ${
                 active ? 'text-brass-700' : 'text-ink-faint'
               }`}
@@ -40,7 +41,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ route, compareCount }) => 
                 </span>
               )}
               {active && <span className="absolute bottom-1 h-1 w-1 rounded-full bg-brass-600" />}
-            </button>
+            </a>
           );
         })}
       </div>

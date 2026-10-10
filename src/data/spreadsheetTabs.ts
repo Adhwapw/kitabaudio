@@ -22,8 +22,8 @@ export const SPREADSHEET_TABS: SpreadsheetTab[] = [
     category: "IEM",
     description: "In-Ear Monitors kabel dari budget hingga TOTL endgame",
     iconName: "Headphones",
-    badge: "140+ Gear",
-    countEstimate: 149
+    badge: "139+ Gear",
+    countEstimate: 139
   },
   {
     id: "tws",
@@ -32,8 +32,8 @@ export const SPREADSHEET_TABS: SpreadsheetTab[] = [
     category: "TWS",
     description: "True Wireless Stereo (ANC, Codec LDAC/AptX, Sound Quality)",
     iconName: "Radio",
-    badge: "120+ Gear",
-    countEstimate: 123
+    badge: "102+ Gear",
+    countEstimate: 102
   },
   {
     id: "tws-nokaret",
@@ -42,7 +42,7 @@ export const SPREADSHEET_TABS: SpreadsheetTab[] = [
     category: "TWS No-Karet",
     description: "TWS tipe non-eartips / semi in-ear santai",
     iconName: "Disc",
-    countEstimate: 25
+    countEstimate: 21
   },
   {
     id: "ows",
@@ -51,7 +51,7 @@ export const SPREADSHEET_TABS: SpreadsheetTab[] = [
     category: "OWS",
     description: "Open Wearable Stereo untuk olahraga & outdoor",
     iconName: "CircleDot",
-    countEstimate: 20
+    countEstimate: 25
   },
   {
     id: "headphone",
@@ -60,8 +60,8 @@ export const SPREADSHEET_TABS: SpreadsheetTab[] = [
     category: "Headphone",
     description: "Headphone Open-back & Closed-back audiophile",
     iconName: "Headset",
-    badge: "40+ Gear",
-    countEstimate: 44
+    badge: "42+ Gear",
+    countEstimate: 42
   },
   {
     id: "w.headphone",
@@ -70,7 +70,7 @@ export const SPREADSHEET_TABS: SpreadsheetTab[] = [
     category: "Wireless Headphone",
     description: "Headphone Bluetooth dengan ANC & Mic",
     iconName: "Wifi",
-    countEstimate: 30
+    countEstimate: 43
   },
   {
     id: "dongle-dac",
@@ -79,8 +79,8 @@ export const SPREADSHEET_TABS: SpreadsheetTab[] = [
     category: "Dongle",
     description: "DAC Portable Type-C / Lightning untuk HP & Laptop",
     iconName: "Usb",
-    badge: "90+ Gear",
-    countEstimate: 90
+    badge: "75+ Gear",
+    countEstimate: 75
   },
   {
     id: "DesktopDAC",
@@ -89,7 +89,7 @@ export const SPREADSHEET_TABS: SpreadsheetTab[] = [
     category: "Desktop DAC",
     description: "DAC & Amp meja untuk setup audio PC/Desktop",
     iconName: "Cpu",
-    countEstimate: 35
+    countEstimate: 21
   },
   {
     id: "headphone-amp",
@@ -98,7 +98,7 @@ export const SPREADSHEET_TABS: SpreadsheetTab[] = [
     category: "DAC/Amp",
     description: "Amplifier khusus pendorong headphone impedansi tinggi",
     iconName: "Zap",
-    countEstimate: 25
+    countEstimate: 7
   },
   {
     id: "gaming",
@@ -107,7 +107,7 @@ export const SPREADSHEET_TABS: SpreadsheetTab[] = [
     category: "Gaming",
     description: "IEM & Headphone pilihan untuk FPS (Footstep, Positional Audio)",
     iconName: "Gamepad2",
-    countEstimate: 40
+    countEstimate: 9
   },
   {
     id: "speaker",
@@ -116,7 +116,7 @@ export const SPREADSHEET_TABS: SpreadsheetTab[] = [
     category: "Speaker",
     description: "Speaker aktif meja, studio monitor, dan multimedia",
     iconName: "Volume2",
-    countEstimate: 25
+    countEstimate: 18
   },
   {
     id: "blutut speaker",
@@ -125,7 +125,7 @@ export const SPREADSHEET_TABS: SpreadsheetTab[] = [
     category: "Bluetooth Speaker",
     description: "Speaker portable nirkabel tahan air & bass punchy",
     iconName: "Speaker",
-    countEstimate: 20
+    countEstimate: 31
   },
   {
     id: "soundbar",
@@ -134,7 +134,7 @@ export const SPREADSHEET_TABS: SpreadsheetTab[] = [
     category: "Soundbar",
     description: "Soundbar TV & Home Theater untuk film & musik",
     iconName: "Tv",
-    countEstimate: 18
+    countEstimate: 6
   },
   {
     id: "DAP",
@@ -143,7 +143,7 @@ export const SPREADSHEET_TABS: SpreadsheetTab[] = [
     category: "DAP",
     description: "Digital Audio Player / Walkman Hi-Res mandiri",
     iconName: "Play",
-    countEstimate: 22
+    countEstimate: 18
   },
   {
     id: "eartips",
@@ -152,7 +152,7 @@ export const SPREADSHEET_TABS: SpreadsheetTab[] = [
     category: "Eartips",
     description: "Tips silikon & busa untuk fine-tuning bass & fitting",
     iconName: "Circle",
-    countEstimate: 30
+    countEstimate: 28
   },
   {
     id: "kabel",
@@ -161,7 +161,7 @@ export const SPREADSHEET_TABS: SpreadsheetTab[] = [
     category: "Kabel",
     description: "Kabel tembaga, silver-plated, dan modular jack",
     iconName: "Cable",
-    countEstimate: 35
+    countEstimate: 53
   },
   {
     id: "mic",
@@ -170,7 +170,7 @@ export const SPREADSHEET_TABS: SpreadsheetTab[] = [
     category: "Mic",
     description: "Mic podcast, streaming, dan vokal",
     iconName: "Mic",
-    countEstimate: 20
+    countEstimate: 35
   },
   {
     id: "clip-on-wireless",
@@ -179,7 +179,7 @@ export const SPREADSHEET_TABS: SpreadsheetTab[] = [
     category: "Other",
     description: "Mic wireless clip-on untuk konten video & vlogging",
     iconName: "Mic2",
-    countEstimate: 15
+    countEstimate: 11
   },
   {
     id: "soundcard",
@@ -197,7 +197,7 @@ export const SPREADSHEET_TABS: SpreadsheetTab[] = [
     category: "Other",
     description: "Adaptor GaN & kabel power minim noise listrik",
     iconName: "BatteryCharging",
-    countEstimate: 15
+    countEstimate: 7
   },
   {
     id: "BACA INI DULU WOI",

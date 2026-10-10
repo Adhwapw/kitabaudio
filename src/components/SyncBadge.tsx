@@ -37,7 +37,6 @@ export const SyncBadge: React.FC<SyncBadgeProps> = ({
     }
     switch (source) {
       case 'live':
-      case 'server':
         return { icon: Wifi, spin: false, label: `Live • ${timeAgo(syncedAt)}`, cls: 'bg-emerald-50 text-emerald-800 border-emerald-200' };
       case 'cache':
         return { icon: History, spin: false, label: `Cache • ${timeAgo(syncedAt)}`, cls: 'bg-amber-50 text-amber-800 border-amber-200' };
