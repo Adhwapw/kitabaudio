@@ -4,7 +4,7 @@
  */
 import React, { useEffect, useState } from 'react';
 import { BookOpenText } from 'lucide-react';
-import { useRoute, navigate } from './router.ts';
+import { useRoute, routeToPath, handleLinkClick, redirectLegacyHash, PageId } from './router.ts';
 import { AudioItem } from './types.ts';
 import {
   startAutoRefresh,
@@ -28,6 +28,7 @@ export default function App() {
 
   // Jalankan auto-refresh sekali untuk seluruh aplikasi
   useEffect(() => {
+    redirectLegacyHash();
     startAutoRefresh();
   }, []);
 
@@ -111,13 +112,14 @@ export default function App() {
                 ['Tentang', 'about'],
               ] as const
             ).map(([label, page]) => (
-              <button
+              <a
                 key={page}
-                onClick={() => navigate({ page })}
+                href={routeToPath({ page: page as PageId })}
+                onClick={(e) => handleLinkClick(e, { page: page as PageId })}
                 className="rounded-full px-3 py-1.5 transition hover:bg-ink/5 hover:text-ink"
               >
                 {label}
-              </button>
+              </a>
             ))}
           </nav>
           <p className="text-xs text-ink-faint">Review bersifat subjektif • Trust your ears</p>

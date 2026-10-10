@@ -1,7 +1,6 @@
 import express from 'express';
 import path from 'path';
 import { createServer as createViteServer } from 'vite';
-import { scrapeSheetService } from './src/utils/sheetScraperService.ts';
 
 async function startServer() {
   const app = express();
@@ -14,20 +13,6 @@ async function startServer() {
   // Health check endpoint
   app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
-  });
-
-  // Spreadsheet Scraping Endpoint
-  app.post('/api/scrape-sheet', async (req, res) => {
-    try {
-      const result = await scrapeSheetService(req.body || {});
-      return res.status(result.statusCode).json(result.data);
-    } catch (error: any) {
-      console.error('Error in /api/scrape-sheet:', error);
-      return res.status(500).json({
-        success: false,
-        error: error.message || 'Terjadi kesalahan sistem saat scraping spreadsheet.',
-      });
-    }
   });
 
   // Vite middleware setup
