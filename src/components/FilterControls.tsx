@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, ArrowUpDown, LayoutGrid, ListFilter, RotateCcw } from 'lucide-react';
+import { ArrowUpDown, LayoutGrid, ListFilter, RotateCcw } from 'lucide-react';
 import { SoundSignature } from '../types.ts';
 
 export type SortOption = 'tier-desc' | 'tier-asc' | 'price-asc' | 'price-desc' | 'name-asc';
@@ -22,10 +22,10 @@ interface FilterControlsProps {
   hasActiveFilters: boolean;
 }
 
-const TIERS = ['All', 'SS', 'S+', 'S', 'A+', 'A', 'B+', 'B'];
+const TIERS = ['All', 'SS', 'S+', 'S', 'A+', 'A', 'B+', 'B', 'C'];
 
 const SIGNATURES: { label: string; value: SoundSignature }[] = [
-  { label: 'Semua Tonal', value: 'All' },
+  { label: 'Semua tonal', value: 'All' },
   { label: 'Warm', value: 'Warm' },
   { label: 'Neutral', value: 'Neutral' },
   { label: 'Harman', value: 'Harman' },
@@ -36,11 +36,11 @@ const SIGNATURES: { label: string; value: SoundSignature }[] = [
 ];
 
 const BUDGETS: { label: string; value: BudgetFilter }[] = [
-  { label: 'Semua Harga', value: 'all' },
+  { label: 'Semua harga', value: 'all' },
   { label: '< 500rb', value: 'under500k' },
-  { label: '500rb - 1.5jt', value: '500k-1.5m' },
-  { label: '1.5jt - 5jt', value: '1.5m-5m' },
-  { label: '> 5jt (Endgame)', value: 'above5m' },
+  { label: '500rb–1,5jt', value: '500k-1.5m' },
+  { label: '1,5jt–5jt', value: '1.5m-5m' },
+  { label: '> 5jt', value: 'above5m' },
 ];
 
 export const FilterControls: React.FC<FilterControlsProps> = ({
@@ -60,88 +60,75 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
   hasActiveFilters,
 }) => {
   return (
-    <div id="revolut-filter-controls" className="my-5 space-y-3">
-      {/* Top Filter Bar: Tier Pills + View Mode & Sort */}
+    <div className="my-5 space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        {/* Tier Pills */}
-        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
-          <span className="text-xs font-bold text-slate-400 mr-1 hidden sm:inline">
-            Tier:
-          </span>
-          {TIERS.map((tier) => {
+        <div className="no-scrollbar flex items-center gap-1.5 overflow-x-auto py-1">
+          <span className="mr-1 hidden text-xs font-bold text-ink-faint sm:inline">Tier:</span>
+          {TIERS.map(tier => {
             const isSelected = selectedTier === tier;
             return (
               <button
                 key={tier}
-                id={`tier-filter-${tier}`}
                 onClick={() => onSelectTier(tier)}
-                className={`px-3 py-1.5 rounded-full text-xs font-bold transition select-none ${
+                className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-bold transition ${
                   isSelected
-                    ? 'bg-slate-900 text-white shadow-xs'
-                    : 'bg-white text-slate-600 hover:text-slate-900 border border-slate-200/80 hover:bg-slate-50'
+                    ? 'bg-ink text-paper shadow'
+                    : 'border border-ink/10 bg-white text-ink-soft hover:border-brass-400 hover:text-ink'
                 }`}
               >
-                {tier === 'All' ? 'Semua Tier' : tier}
+                {tier === 'All' ? 'Semua' : tier}
               </button>
             );
           })}
         </div>
 
-        {/* Right: Sort & Grid View Toggle */}
         <div className="flex items-center gap-2">
           <div className="relative flex items-center">
-            <ArrowUpDown className="w-3.5 h-3.5 text-slate-500 absolute left-2.5 pointer-events-none" />
+            <ArrowUpDown className="pointer-events-none absolute left-2.5 h-3.5 w-3.5 text-ink-faint" />
             <select
-              id="sort-select"
               value={sortBy}
-              onChange={(e) => onSortChange(e.target.value as SortOption)}
-              className="pl-8 pr-6 py-1.5 text-xs font-semibold bg-white border border-slate-200/80 rounded-full text-slate-700 shadow-2xs focus:outline-none cursor-pointer"
+              onChange={e => onSortChange(e.target.value as SortOption)}
+              className="cursor-pointer rounded-full border border-ink/10 bg-white py-1.5 pl-8 pr-6 text-xs font-semibold text-ink shadow-sm focus:border-brass-400 focus:outline-none"
             >
-              <option value="tier-desc">Tier Terbaik</option>
-              <option value="price-asc">Harga Termurah</option>
-              <option value="price-desc">Harga Tertinggi</option>
-              <option value="name-asc">Nama (A-Z)</option>
+              <option value="tier-desc">Tier terbaik</option>
+              <option value="price-asc">Harga termurah</option>
+              <option value="price-desc">Harga tertinggi</option>
+              <option value="name-asc">Nama (A–Z)</option>
             </select>
           </div>
 
-          <div className="flex items-center p-0.5 bg-slate-100 rounded-full border border-slate-200/80">
+          <div className="flex items-center rounded-full border border-ink/10 bg-white p-0.5 shadow-sm">
             <button
               onClick={() => onViewModeChange('grid')}
-              className={`p-1.5 rounded-full transition ${
-                viewMode === 'grid' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-500 hover:text-slate-800'
-              }`}
-              title="Grid Card View"
+              className={`rounded-full p-1.5 transition ${viewMode === 'grid' ? 'bg-ink text-paper' : 'text-ink-faint hover:text-ink'}`}
+              title="Tampilan kartu"
             >
-              <LayoutGrid className="w-3.5 h-3.5" />
+              <LayoutGrid className="h-3.5 w-3.5" />
             </button>
             <button
               onClick={() => onViewModeChange('compact')}
-              className={`p-1.5 rounded-full transition ${
-                viewMode === 'compact' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-500 hover:text-slate-800'
-              }`}
-              title="Compact List View"
+              className={`rounded-full p-1.5 transition ${viewMode === 'compact' ? 'bg-ink text-paper' : 'text-ink-faint hover:text-ink'}`}
+              title="Tampilan ringkas"
             >
-              <ListFilter className="w-3.5 h-3.5" />
+              <ListFilter className="h-3.5 w-3.5" />
             </button>
           </div>
         </div>
       </div>
 
-      {/* Secondary Filter Row: Budget & Sound Signature */}
-      <div className="flex flex-wrap items-center justify-between gap-2 pt-1 text-xs">
+      <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
         <div className="flex flex-wrap items-center gap-2">
-          {/* Budget Pills */}
-          <div className="flex items-center gap-1 overflow-x-auto no-scrollbar">
-            {BUDGETS.map((b) => {
+          <div className="no-scrollbar flex items-center gap-1 overflow-x-auto">
+            {BUDGETS.map(b => {
               const isSelected = selectedBudget === b.value;
               return (
                 <button
                   key={b.value}
                   onClick={() => onSelectBudget(b.value)}
-                  className={`px-2.5 py-1 rounded-xl text-[11px] font-semibold transition ${
+                  className={`shrink-0 rounded-xl px-2.5 py-1 text-[11px] font-semibold transition ${
                     isSelected
-                      ? 'bg-slate-800 text-white shadow-2xs'
-                      : 'bg-white text-slate-600 hover:text-slate-900 border border-slate-200/80'
+                      ? 'bg-brass-600 text-white shadow-sm'
+                      : 'border border-ink/10 bg-white text-ink-soft hover:border-brass-400 hover:text-ink'
                   }`}
                 >
                   {b.label}
@@ -150,14 +137,12 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
             })}
           </div>
 
-          {/* Sound Signature Select */}
           <select
-            id="signature-select"
             value={selectedSignature}
-            onChange={(e) => onSelectSignature(e.target.value)}
-            className="px-2.5 py-1 text-[11px] font-semibold bg-white border border-slate-200/80 rounded-xl text-slate-700 shadow-2xs focus:outline-none cursor-pointer"
+            onChange={e => onSelectSignature(e.target.value)}
+            className="cursor-pointer rounded-xl border border-ink/10 bg-white px-2.5 py-1 text-[11px] font-semibold text-ink shadow-sm focus:border-brass-400 focus:outline-none"
           >
-            {SIGNATURES.map((sig) => (
+            {SIGNATURES.map(sig => (
               <option key={sig.value} value={sig.value}>
                 {sig.label}
               </option>
@@ -165,18 +150,16 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
           </select>
         </div>
 
-        {/* Count & Reset */}
-        <div className="flex items-center gap-2 text-slate-500">
+        <div className="flex items-center gap-2 text-ink-faint">
           <span className="font-semibold">
             {totalFiltered} dari {totalAll} gear
           </span>
           {hasActiveFilters && (
             <button
               onClick={onResetFilters}
-              className="flex items-center gap-1 text-[11px] text-rose-600 hover:text-rose-700 font-bold px-2 py-0.5 rounded-md hover:bg-rose-50 transition"
+              className="flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-bold text-rose-700 transition hover:bg-rose-50"
             >
-              <RotateCcw className="w-3 h-3" />
-              <span>Reset</span>
+              <RotateCcw className="h-3 w-3" /> Reset
             </button>
           )}
         </div>

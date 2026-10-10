@@ -1,18 +1,14 @@
 import React, { useState } from 'react';
-import { 
-  X, 
-  ThumbsUp, 
-  ExternalLink, 
-  GitCompare, 
-  Share2, 
-  Check, 
-  Cpu, 
-  Music, 
-  Activity, 
+import {
+  X,
+  ExternalLink,
+  GitCompareArrows,
+  Share2,
+  Check,
+  Cpu,
+  Activity,
   ShoppingBag,
   Sparkles,
-  Sliders,
-  Volume2
 } from 'lucide-react';
 import { AudioItem } from '../types.ts';
 import { getTierColor, getSignatureColor, formatPrice } from '../utils/audioTheme.ts';
@@ -40,10 +36,11 @@ export const AudioDetailModal: React.FC<AudioDetailModalProps> = ({
   const sigStyle = getSignatureColor(item.soundSignature);
 
   const handleShare = () => {
-    const text = `🎧 *${item.name}* (Tier ${item.tier})\n` +
+    const text =
+      `🎧 *${item.name}* (Tier ${item.tier})\n` +
       `🏷️ Brand: ${item.brand} | Kategori: ${item.category}\n` +
       `💰 Harga: ${formatPrice(item.priceNumeric, item.price)}\n` +
-      `🎵 Sound Signature: ${item.soundSignature}\n` +
+      `🎵 Karakter: ${item.soundSignature}\n` +
       (item.soundScore ? `⭐ Skor: ${item.soundScore}\n` : '') +
       `📝 Impresi: "${item.notes}"\n\n` +
       `_Kitab Audio • Kurasi Fernanda Gunsan_`;
@@ -56,54 +53,50 @@ export const AudioDetailModal: React.FC<AudioDetailModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/50 backdrop-blur-xs transition-opacity animate-in fade-in duration-150">
-      <div 
-        className="w-full max-w-xl max-h-[90vh] flex flex-col bg-white border border-slate-200/90 rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden animate-in slide-in-from-bottom-6 duration-200"
+    <div
+      className="fixed inset-0 z-50 flex items-end justify-center bg-ink/60 p-0 backdrop-blur-sm sm:items-center sm:p-4"
+      onClick={onClose}
+    >
+      <div
+        className="flex max-h-[92vh] w-full max-w-xl flex-col overflow-hidden rounded-t-3xl border border-ink/10 bg-paper shadow-2xl sm:rounded-3xl"
         onClick={e => e.stopPropagation()}
       >
-        {/* Modal Top Header (Revolut Clean Style) */}
-        <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-100 bg-slate-50/70 shrink-0">
+        {/* Header */}
+        <div className="flex shrink-0 items-center justify-between border-b border-ink/10 bg-white/60 px-5 py-3.5">
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-              Kitab Audio
-            </span>
-            <span className="text-slate-300">•</span>
-            <span className="text-xs text-slate-700 font-semibold">{item.category}</span>
+            <span className="eyebrow text-brass-700">Kitab Audio</span>
+            <span className="text-ink/20">•</span>
+            <span className="text-xs font-semibold text-ink-soft">{item.category}</span>
           </div>
-
           <div className="flex items-center gap-2">
             <button
               onClick={handleShare}
-              id="detail-share-btn"
-              className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white hover:bg-slate-100 text-slate-700 text-xs font-semibold border border-slate-200/80 transition"
+              className="flex items-center gap-1.5 rounded-full border border-ink/10 bg-white px-3 py-1.5 text-xs font-semibold text-ink-soft transition hover:border-brass-400 hover:text-ink"
               title="Salin ringkasan gear"
             >
               {copied ? (
                 <>
-                  <Check className="w-3.5 h-3.5 text-emerald-600" />
+                  <Check className="h-3.5 w-3.5 text-emerald-600" />
                   <span className="text-emerald-700">Tersalin</span>
                 </>
               ) : (
                 <>
-                  <Share2 className="w-3.5 h-3.5 text-slate-500" />
+                  <Share2 className="h-3.5 w-3.5" />
                   <span>Bagikan</span>
                 </>
               )}
             </button>
-
             <button
               onClick={onClose}
-              id="detail-close-btn"
-              className="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition"
+              className="flex h-8 w-8 items-center justify-center rounded-full text-ink-faint transition hover:bg-ink/5 hover:text-ink"
             >
-              <X className="w-4 h-4" />
+              <X className="h-4 w-4" />
             </button>
           </div>
         </div>
 
-        {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-5 no-scrollbar">
-          {/* Main Gear Hero Header */}
+        {/* Konten */}
+        <div className="no-scrollbar flex-1 space-y-5 overflow-y-auto p-5 sm:p-6">
           <div className="flex items-start gap-4">
             <AudioTemplateAvatar
               category={item.category}
@@ -112,110 +105,88 @@ export const AudioDetailModal: React.FC<AudioDetailModalProps> = ({
               tier={item.tier}
               size="lg"
             />
-
             <div className="min-w-0 flex-1">
-              <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                {item.brand}
-              </div>
-              <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-snug mt-0.5">
+              <div className="text-xs font-bold uppercase tracking-wider text-ink-faint">{item.brand}</div>
+              <h2 className="font-display mt-0.5 text-xl font-black leading-snug tracking-tight text-ink sm:text-2xl">
                 {item.name}
               </h2>
-              <div className="flex items-center gap-2 flex-wrap mt-2">
-                <span className="text-lg font-black text-slate-900">
+              <div className="mt-2 flex flex-wrap items-center gap-2">
+                <span className="font-display text-lg font-bold text-ink">
                   {formatPrice(item.priceNumeric, item.price)}
                 </span>
-                <span className={`text-xs font-black px-2.5 py-0.5 rounded-full border shadow-2xs ${tierStyle.pillBg}`}>
+                <span className={`rounded-full border px-2.5 py-0.5 text-xs font-black shadow-sm ${tierStyle.pillBg}`}>
                   Tier {item.tier}
                 </span>
                 {item.soundScore && (
-                  <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-                    ★ Skor: {item.soundScore}
+                  <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-xs font-bold text-emerald-700">
+                    ★ Skor {item.soundScore}
                   </span>
                 )}
               </div>
             </div>
           </div>
 
-          {/* Sub Tab Navigation */}
-          <div className="flex items-center gap-2 p-1 bg-slate-100 rounded-2xl">
-            <button
-              onClick={() => setActiveSubTab('overview')}
-              className={`flex-1 py-1.5 rounded-xl text-xs font-bold transition ${
-                activeSubTab === 'overview'
-                  ? 'bg-white text-slate-900 shadow-xs'
-                  : 'text-slate-500 hover:text-slate-800'
-              }`}
-            >
-              Overview
-            </button>
-            <button
-              onClick={() => setActiveSubTab('tuning')}
-              className={`flex-1 py-1.5 rounded-xl text-xs font-bold transition ${
-                activeSubTab === 'tuning'
-                  ? 'bg-white text-slate-900 shadow-xs'
-                  : 'text-slate-500 hover:text-slate-800'
-              }`}
-            >
-              Tonal & Teknis
-            </button>
-            <button
-              onClick={() => setActiveSubTab('accessories')}
-              className={`flex-1 py-1.5 rounded-xl text-xs font-bold transition ${
-                activeSubTab === 'accessories'
-                  ? 'bg-white text-slate-900 shadow-xs'
-                  : 'text-slate-500 hover:text-slate-800'
-              }`}
-            >
-              Eartips & EQ
-            </button>
+          {/* Sub-tab */}
+          <div className="flex items-center gap-1 rounded-2xl border border-ink/10 bg-parchment/70 p-1">
+            {(
+              [
+                ['overview', 'Overview'],
+                ['tuning', 'Tonal & Teknis'],
+                ['accessories', 'Eartips & EQ'],
+              ] as const
+            ).map(([id, label]) => (
+              <button
+                key={id}
+                onClick={() => setActiveSubTab(id)}
+                className={`flex-1 rounded-xl py-1.5 text-xs font-bold transition ${
+                  activeSubTab === id ? 'bg-ink text-paper shadow' : 'text-ink-faint hover:text-ink'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
           </div>
 
           {activeSubTab === 'overview' && (
             <div className="space-y-4">
-              {/* Sound Profile and Specs Grid */}
               <div className="grid grid-cols-2 gap-3">
-                <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5">
-                  <div className="flex items-center gap-1.5 text-xs text-slate-500 font-semibold mb-1">
-                    <Activity className="w-3.5 h-3.5 text-slate-600" />
-                    <span>Sound Profile</span>
+                <div className="rounded-2xl border border-ink/10 bg-white p-3.5">
+                  <div className="mb-1 flex items-center gap-1.5 text-xs font-semibold text-ink-faint">
+                    <Activity className="h-3.5 w-3.5" />
+                    <span>Karakter suara</span>
                   </div>
-                  <span className={`inline-block text-xs font-bold px-2.5 py-0.5 rounded-full border ${sigStyle}`}>
+                  <span className={`inline-block rounded-full border px-2.5 py-0.5 text-xs font-bold ${sigStyle}`}>
                     {item.soundSignature}
                   </span>
                 </div>
-
-                <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5">
-                  <div className="flex items-center gap-1.5 text-xs text-slate-500 font-semibold mb-1">
-                    <Cpu className="w-3.5 h-3.5 text-slate-600" />
-                    <span>Konfigurasi Driver</span>
+                <div className="rounded-2xl border border-ink/10 bg-white p-3.5">
+                  <div className="mb-1 flex items-center gap-1.5 text-xs font-semibold text-ink-faint">
+                    <Cpu className="h-3.5 w-3.5" />
+                    <span>Driver</span>
                   </div>
-                  <div className="text-xs font-bold text-slate-800 line-clamp-1">
-                    {item.driver || 'Driver Terkurasi'}
+                  <div className="line-clamp-2 text-xs font-bold text-ink">
+                    {item.driver || 'Terkurasi reviewer'}
                   </div>
                 </div>
               </div>
 
-              {/* Reviewer Impressions Notes */}
-              <div className="p-4 bg-slate-50/90 border border-slate-200/90 rounded-2xl">
-                <div className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                  <span>Catatan & Impresi Reviewer</span>
+              <div className="rounded-2xl border border-ink/10 bg-white p-4">
+                <div className="eyebrow mb-2 flex items-center gap-1.5 text-brass-700">
+                  <Sparkles className="h-3.5 w-3.5" />
+                  <span>Catatan reviewer</span>
                 </div>
-                <p className="text-xs sm:text-sm text-slate-700 leading-relaxed whitespace-pre-line font-medium">
+                <p className="whitespace-pre-line text-sm font-medium leading-relaxed text-ink-soft">
                   {item.notes}
                 </p>
               </div>
 
-              {/* Pros and Highlights */}
               {item.pros && item.pros.length > 0 && (
-                <div className="p-4 bg-emerald-50/50 border border-emerald-200/70 rounded-2xl">
-                  <div className="text-xs font-bold text-emerald-800 uppercase tracking-wider mb-2">
-                    Kelebihan Utama
-                  </div>
+                <div className="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4">
+                  <div className="eyebrow mb-2 text-emerald-800">Kelebihan utama</div>
                   <div className="space-y-1.5">
                     {item.pros.map((pro, idx) => (
-                      <div key={idx} className="flex items-start gap-2 text-xs text-emerald-950 font-medium">
-                        <span className="text-emerald-600 font-bold shrink-0">✓</span>
+                      <div key={idx} className="flex items-start gap-2 text-xs font-medium text-emerald-950">
+                        <span className="shrink-0 font-bold text-emerald-600">✓</span>
                         <span>{pro}</span>
                       </div>
                     ))}
@@ -227,38 +198,32 @@ export const AudioDetailModal: React.FC<AudioDetailModalProps> = ({
 
           {activeSubTab === 'tuning' && (
             <div className="space-y-4">
-              {/* Tonality Metrics */}
               {item.tonalityMetrics && Object.keys(item.tonalityMetrics).length > 0 ? (
-                <div className="p-4 bg-slate-50 border border-slate-200/90 rounded-2xl">
-                  <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-3">
-                    Detail Tonality
-                  </h4>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+                <div className="rounded-2xl border border-ink/10 bg-white p-4">
+                  <h4 className="eyebrow mb-3 text-ink-soft">Detail tonality</h4>
+                  <div className="grid grid-cols-2 gap-2 text-xs sm:grid-cols-3">
                     {Object.entries(item.tonalityMetrics).map(([k, v]) => (
-                      <div key={k} className="p-2 bg-white rounded-xl border border-slate-200/60">
-                        <span className="text-slate-400 block text-[10px] font-medium">{k}</span>
-                        <span className="font-bold text-slate-900">{v}</span>
+                      <div key={k} className="rounded-xl border border-ink/8 bg-parchment/60 p-2">
+                        <span className="block text-[10px] font-medium text-ink-faint">{k}</span>
+                        <span className="font-bold text-ink">{v}</span>
                       </div>
                     ))}
                   </div>
                 </div>
               ) : (
-                <div className="p-4 bg-slate-50 border border-slate-200/90 rounded-2xl text-xs text-slate-600">
-                  Karakter suara utama berfokus pada <strong>{item.soundSignature}</strong>.
+                <div className="rounded-2xl border border-ink/10 bg-white p-4 text-xs text-ink-soft">
+                  Karakter suara utama berfokus pada <strong className="text-ink">{item.soundSignature}</strong>.
                 </div>
               )}
 
-              {/* Technicality Metrics */}
               {item.technicalityMetrics && Object.keys(item.technicalityMetrics).length > 0 && (
-                <div className="p-4 bg-slate-50 border border-slate-200/90 rounded-2xl">
-                  <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-3">
-                    Detail Teknis & Resolusi
-                  </h4>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+                <div className="rounded-2xl border border-ink/10 bg-white p-4">
+                  <h4 className="eyebrow mb-3 text-ink-soft">Detail teknis</h4>
+                  <div className="grid grid-cols-2 gap-2 text-xs sm:grid-cols-3">
                     {Object.entries(item.technicalityMetrics).map(([k, v]) => (
-                      <div key={k} className="p-2 bg-white rounded-xl border border-slate-200/60">
-                        <span className="text-slate-400 block text-[10px] font-medium">{k}</span>
-                        <span className="font-bold text-slate-900">{v}</span>
+                      <div key={k} className="rounded-xl border border-ink/8 bg-parchment/60 p-2">
+                        <span className="block text-[10px] font-medium text-ink-faint">{k}</span>
+                        <span className="font-bold text-ink">{v}</span>
                       </div>
                     ))}
                   </div>
@@ -268,53 +233,43 @@ export const AudioDetailModal: React.FC<AudioDetailModalProps> = ({
           )}
 
           {activeSubTab === 'accessories' && (
-            <div className="space-y-4">
-              <div className="p-4 bg-slate-50 border border-slate-200/90 rounded-2xl space-y-3 text-xs sm:text-sm">
-                <div>
-                  <span className="text-slate-400 font-bold block text-xs uppercase mb-1">
-                    Eartips Yang Cocok
-                  </span>
-                  <p className="text-slate-800 font-semibold">
-                    {item.suitableEartips || 'Kombinasi eartips silikon bawaan atau Spinfit CP100 / Tang Sancai.'}
-                  </p>
-                </div>
-
-                <div className="pt-3 border-t border-slate-200/70">
-                  <span className="text-slate-400 font-bold block text-xs uppercase mb-1">
-                    Rekomendasi Kabel
-                  </span>
-                  <p className="text-slate-800 font-semibold">
-                    {item.recommendedCable || 'Kabel tembaga OFC 2-pin / MMCX 4.4mm balanced.'}
-                  </p>
-                </div>
-
-                {item.parametricEq && (
-                  <div className="pt-3 border-t border-slate-200/70">
-                    <span className="text-slate-400 font-bold block text-xs uppercase mb-1">
-                      Setting Parametric EQ
-                    </span>
-                    <pre className="text-xs bg-slate-900 text-emerald-400 p-2.5 rounded-xl overflow-x-auto font-mono">
-                      {item.parametricEq}
-                    </pre>
-                  </div>
-                )}
+            <div className="space-y-3 rounded-2xl border border-ink/10 bg-white p-4 text-sm">
+              <div>
+                <span className="eyebrow mb-1 block text-ink-faint">Eartips yang cocok</span>
+                <p className="font-semibold text-ink">
+                  {item.suitableEartips || 'Eartips silikon bawaan atau Spinfit CP100 / Tang Sancai.'}
+                </p>
               </div>
+              <div className="border-t border-ink/8 pt-3">
+                <span className="eyebrow mb-1 block text-ink-faint">Rekomendasi kabel</span>
+                <p className="font-semibold text-ink">
+                  {item.recommendedCable || 'Kabel tembaga OFC 2-pin / MMCX 4.4mm balanced.'}
+                </p>
+              </div>
+              {item.parametricEq && (
+                <div className="border-t border-ink/8 pt-3">
+                  <span className="eyebrow mb-1 block text-ink-faint">Parametric EQ</span>
+                  <pre className="overflow-x-auto rounded-xl bg-ink p-2.5 font-mono text-xs text-emerald-300">
+                    {item.parametricEq}
+                  </pre>
+                </div>
+              )}
             </div>
           )}
         </div>
 
-        {/* Modal Bottom Actions (Revolut Style) */}
-        <div className="p-4 border-t border-slate-100 bg-slate-50/70 flex flex-wrap items-center justify-between gap-3 shrink-0">
+        {/* Aksi bawah */}
+        <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-t border-ink/10 bg-white/60 p-4">
           <button
             onClick={() => onToggleCompare(item)}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl border text-xs sm:text-sm font-bold transition ${
+            className={`flex items-center gap-2 rounded-2xl border px-4 py-2.5 text-xs font-bold transition sm:text-sm ${
               isCompared
-                ? 'bg-slate-900 text-white border-slate-900 shadow-xs'
-                : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'
+                ? 'border-ink bg-ink text-paper'
+                : 'border-ink/15 bg-white text-ink hover:border-brass-400'
             }`}
           >
-            <GitCompare className="w-4 h-4" />
-            <span>{isCompared ? 'Sedang Dibandingkan' : 'Bandingkan Gear'}</span>
+            <GitCompareArrows className="h-4 w-4" />
+            <span>{isCompared ? 'Sedang dibandingkan' : 'Bandingkan'}</span>
           </button>
 
           <div className="flex items-center gap-2">
@@ -323,21 +278,20 @@ export const AudioDetailModal: React.FC<AudioDetailModalProps> = ({
                 href={item.buyUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 px-4 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm shadow-xs transition"
+                className="flex items-center gap-1.5 rounded-2xl bg-emerald-600 px-4 py-2.5 text-xs font-bold text-white transition hover:bg-emerald-700 sm:text-sm"
               >
-                <ShoppingBag className="w-4 h-4" />
+                <ShoppingBag className="h-4 w-4" />
                 <span>Tokopedia</span>
               </a>
             )}
-
             {item.shopeeUrl && (
               <a
                 href={item.shopeeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 px-4 py-2.5 rounded-2xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs sm:text-sm shadow-xs transition"
+                className="flex items-center gap-1.5 rounded-2xl bg-orange-500 px-4 py-2.5 text-xs font-bold text-white transition hover:bg-orange-600 sm:text-sm"
               >
-                <ShoppingBag className="w-4 h-4" />
+                <ExternalLink className="h-4 w-4" />
                 <span>Shopee</span>
               </a>
             )}

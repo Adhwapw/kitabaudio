@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { X, Search, Headphones, Radio, Headset, Usb, Cpu, Zap, Gamepad2, Volume2, Speaker, Tv, Play, Circle, Cable, Mic, Mic2, Sliders, BatteryCharging, Info, Disc, CircleDot, Wifi } from 'lucide-react';
+import { X, Search } from 'lucide-react';
 import { SPREADSHEET_TABS, SpreadsheetTab } from '../data/spreadsheetTabs.ts';
+import { CategoryIcon } from './CategoryIcon.tsx';
 
 interface TabSelectorModalProps {
   isOpen: boolean;
@@ -25,74 +26,47 @@ export const TabSelectorModal: React.FC<TabSelectorModalProps> = ({
          t.description.toLowerCase().includes(search.toLowerCase())
   );
 
-  const renderIcon = (iconName: string) => {
-    const props = { className: "w-5 h-5 text-slate-700" };
-    switch (iconName) {
-      case 'Headphones': return <Headphones {...props} />;
-      case 'Radio': return <Radio {...props} />;
-      case 'Headset': return <Headset {...props} />;
-      case 'Usb': return <Usb {...props} />;
-      case 'Cpu': return <Cpu {...props} />;
-      case 'Zap': return <Zap {...props} />;
-      case 'Gamepad2': return <Gamepad2 {...props} />;
-      case 'Volume2': return <Volume2 {...props} />;
-      case 'Speaker': return <Speaker {...props} />;
-      case 'Tv': return <Tv {...props} />;
-      case 'Play': return <Play {...props} />;
-      case 'Circle': return <Circle {...props} />;
-      case 'Cable': return <Cable {...props} />;
-      case 'Mic': return <Mic {...props} />;
-      case 'Mic2': return <Mic2 {...props} />;
-      case 'Sliders': return <Sliders {...props} />;
-      case 'BatteryCharging': return <BatteryCharging {...props} />;
-      case 'Disc': return <Disc {...props} />;
-      case 'CircleDot': return <CircleDot {...props} />;
-      case 'Wifi': return <Wifi {...props} />;
-      default: return <Info {...props} />;
-    }
-  };
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs transition-opacity">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-ink/60 p-4 backdrop-blur-sm"
+      onClick={onClose}
+    >
       <div
-        id="tab-selector-modal"
-        className="bg-white rounded-3xl border border-slate-200/90 shadow-2xl max-w-2xl w-full max-h-[85vh] flex flex-col p-6 relative animate-in fade-in zoom-in-95 duration-150"
+        className="flex max-h-[85vh] w-full max-w-2xl flex-col rounded-3xl border border-ink/10 bg-paper p-6 shadow-2xl"
+        onClick={e => e.stopPropagation()}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+        <div className="flex items-center justify-between border-b border-ink/10 pb-4">
           <div>
-            <h2 className="text-lg font-black text-slate-900 tracking-tight">
-              Pilih Tab Spreadsheet Kitab Audio
+            <h2 className="font-display text-lg font-black tracking-tight text-ink">
+              Daftar isi kitab
             </h2>
-            <p className="text-xs text-slate-500 font-medium mt-0.5">
-              Tersedia 21 kategori perangkat audio dari Google Sheets
+            <p className="mt-0.5 text-xs font-medium text-ink-soft">
+              {SPREADSHEET_TABS.length} kategori perangkat dari spreadsheet
             </p>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition"
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-ink/5 text-ink-faint transition hover:bg-ink/10 hover:text-ink"
           >
-            <X className="w-4 h-4" />
+            <X className="h-4 w-4" />
           </button>
         </div>
 
-        {/* Search input */}
         <div className="py-3">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-faint" />
             <input
               type="text"
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Cari tab audio (IEM, TWS, Dongle, Speaker, Kabel)..."
-              className="w-full pl-9 pr-4 py-2 text-sm bg-slate-50 rounded-2xl border border-slate-200/80 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900/10"
+              onChange={e => setSearch(e.target.value)}
+              placeholder="Cari kategori (IEM, TWS, Dongle, Speaker, Kabel)…"
+              className="w-full rounded-2xl border border-ink/10 bg-white py-2.5 pl-9 pr-4 text-sm text-ink placeholder:text-ink-faint focus:border-brass-500 focus:outline-none focus:ring-2 focus:ring-brass-200"
             />
           </div>
         </div>
 
-        {/* Grid of Tabs */}
-        <div className="overflow-y-auto no-scrollbar py-2 space-y-2 flex-1 pr-1">
-          {filteredTabs.map((tab) => {
+        <div className="no-scrollbar flex-1 space-y-2 overflow-y-auto py-2 pr-1">
+          {filteredTabs.map(tab => {
             const isSelected = tab.gid === activeGid;
             return (
               <div
@@ -101,52 +75,35 @@ export const TabSelectorModal: React.FC<TabSelectorModalProps> = ({
                   onSelectTab(tab);
                   onClose();
                 }}
-                className={`flex items-center justify-between p-3.5 rounded-2xl border transition-all cursor-pointer ${
+                className={`flex cursor-pointer items-center justify-between rounded-2xl border p-3.5 transition ${
                   isSelected
-                    ? 'bg-slate-900 text-white border-slate-900 shadow-xs'
-                    : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-200/80 hover:border-slate-300'
+                    ? 'border-ink bg-ink text-paper shadow'
+                    : 'border-ink/10 bg-white text-ink hover:border-brass-400 hover:shadow-sm'
                 }`}
               >
                 <div className="flex items-center gap-3.5">
-                  <div
-                    className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                      isSelected ? 'bg-white/15 text-white' : 'bg-slate-100 text-slate-700'
-                    }`}
-                  >
-                    {renderIcon(tab.iconName)}
+                  <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${isSelected ? 'bg-white/15 text-paper' : 'bg-parchment text-brass-700'}`}>
+                    <CategoryIcon name={tab.iconName} className="h-5 w-5" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="font-bold text-sm tracking-tight">{tab.label}</span>
+                      <span className="text-sm font-bold tracking-tight">{tab.label}</span>
                       {tab.badge && (
-                        <span
-                          className={`text-[10px] px-2 py-0.2 rounded-full font-bold uppercase tracking-wider ${
-                            isSelected ? 'bg-amber-400 text-slate-950' : 'bg-amber-50 text-amber-800 border border-amber-200'
-                          }`}
-                        >
+                        <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${isSelected ? 'bg-brass-400 text-ink' : 'border border-brass-300 bg-brass-50 text-brass-800'}`}>
                           {tab.badge}
                         </span>
                       )}
                     </div>
-                    <p
-                      className={`text-xs mt-0.5 line-clamp-1 ${
-                        isSelected ? 'text-slate-300' : 'text-slate-500'
-                      }`}
-                    >
+                    <p className={`mt-0.5 line-clamp-1 text-xs ${isSelected ? 'text-paper/70' : 'text-ink-faint'}`}>
                       {tab.description}
                     </p>
                   </div>
                 </div>
-
-                <div className="text-right shrink-0 pl-3">
-                  <span
-                    className={`text-xs font-semibold px-2 py-0.5 rounded-lg ${
-                      isSelected ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'
-                    }`}
-                  >
-                    GID: {tab.gid}
+                {tab.countEstimate ? (
+                  <span className={`shrink-0 rounded-lg px-2 py-0.5 pl-3 text-xs font-semibold ${isSelected ? 'bg-white/20 text-paper' : 'bg-parchment text-ink-soft'}`}>
+                    {tab.countEstimate}+ gear
                   </span>
-                </div>
+                ) : null}
               </div>
             );
           })}
