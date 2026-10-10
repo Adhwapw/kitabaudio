@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { AudioItem } from '../types.ts';
 import { getTierColor, getSignatureColor, formatPrice } from '../utils/audioTheme.ts';
-import { AudioTemplateAvatar } from './AudioTemplateAvatar.tsx';
+import { ProductImage } from './ProductImage.tsx';
 
 interface AudioDetailModalProps {
   item: AudioItem | null;
@@ -98,13 +98,7 @@ export const AudioDetailModal: React.FC<AudioDetailModalProps> = ({
         {/* Konten */}
         <div className="no-scrollbar flex-1 space-y-5 overflow-y-auto p-5 sm:p-6">
           <div className="flex items-start gap-4">
-            <AudioTemplateAvatar
-              category={item.category}
-              name={item.name}
-              brand={item.brand}
-              tier={item.tier}
-              size="lg"
-            />
+            <ProductImage item={item} className="h-24 w-24 rounded-3xl sm:h-28 sm:w-28" avatarSize="lg" />
             <div className="min-w-0 flex-1">
               <div className="text-xs font-bold uppercase tracking-wider text-ink-faint">{item.brand}</div>
               <h2 className="font-display mt-0.5 text-xl font-black leading-snug tracking-tight text-ink sm:text-2xl">
