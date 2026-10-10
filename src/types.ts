@@ -58,6 +58,7 @@ export interface AudioItem {
   buyUrl?: string;
   shopeeUrl?: string;
   tiktokUrl?: string;
+  imageUrl?: string;
   suitableEartips?: string;
   recommendedCable?: string;
   parametricEq?: string;

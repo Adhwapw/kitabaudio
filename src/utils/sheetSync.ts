@@ -1,21 +1,18 @@
 /**
  * sheetSync.ts — Mesin sinkronisasi spreadsheet Kitab Audio (client-side).
  *
- * Masalah yang diperbaiki:
- * Versi lama mengambil CSV Google Sheets lewat server (/api/scrape-sheet).
- * IP server/Vercel serverless sering diblokir Google sebagai bot sehingga
- * website jatuh ke data snapshot basi ("koneksi terputus").
- *
- * Pendekatan baru: browser pengunjung mengambil CSV langsung dari Google
- * (endpoint gviz/export mengirim header CORS Access-Control-Allow-Origin,
- * terverifikasi 10 Okt 2026). IP residential pengunjung tidak diblokir bot.
+ * Arsitektur data (diperbarui 10 Okt 2026):
+ * Crawler terjadwal (scripts/crawl-sheet.ts + GitHub Actions tiap 6 jam)
+ * menarik seluruh tab spreadsheet dan menyimpannya sebagai snapshot segar
+ * di src/data/preloadedGunsanData.ts. Browser pengunjung memuat snapshot
+ * itu dulu (cepat, tidak tergantung jaringan ke Google), lalu mencoba
+ * sync live di background untuk data yang lebih segar.
  *
  * Urutan jalur pengambilan (fallback berlapis):
- *  1. Direct: gviz/tq?tqx=out:csv  (utama, tercepat)
+ *  1. Direct: gviz/tq?tqx=out:csv  (utama, data paling segar)
  *  2. Direct: export?format=csv     (cadangan bila gviz gagal)
- *  3. Server proxy: POST /api/scrape-sheet (bila jaringan user memblokir Google)
- *  4. Cache localStorage (data terakhir yang berhasil, lengkap dengan timestamp)
- *  5. Snapshot bawaan (preloadedGunsanData) — terakhir, agar UI tidak pernah kosong
+ *  3. Cache localStorage (data terakhir yang berhasil, lengkap dengan timestamp)
+ *  4. Snapshot bawaan hasil crawl (maksimal 6 jam + waktu deploy)
  *
  * Setiap percobaan jaringan memakai timeout + retry dengan exponential backoff.
  */
@@ -24,7 +21,7 @@ import { parseSpreadsheetRows } from './sheetParser.ts';
 import { DEFAULT_SHEET_ID, getTabByGid } from '../data/spreadsheetTabs.ts';
 import { AudioItem } from '../types.ts';
 
-export type SyncSource = 'live' | 'server' | 'cache' | 'preloaded';
+export type SyncSource = 'live' | 'cache' | 'preloaded';
 
 export interface SyncResult {
   items: AudioItem[];
@@ -133,38 +130,11 @@ async function fetchDirectCsv(sheetId: string, gid: string): Promise<string> {
   throw new Error(lastError || 'Tidak dapat menjangkau Google Sheets');
 }
 
-/**
- * Jalur cadangan: lewat server sendiri (/api/scrape-sheet).
- * Berguna bila jaringan pengunjung memblokir docs.google.com.
- */
-async function fetchViaServerProxy(sheetId: string, gid: string): Promise<{ items: AudioItem[]; headers: string[] }> {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 25000);
-  try {
-    const res = await fetch('/api/scrape-sheet', {
-      method: 'POST',
-      signal: controller.signal,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        sheetUrl: `https://docs.google.com/spreadsheets/d/${sheetId}/edit`,
-        gid,
-      }),
-    });
-    const data = await res.json();
-    if (res.ok && data.success && Array.isArray(data.items) && data.items.length > 0) {
-      return { items: data.items, headers: data.metadata?.columnHeaders || [] };
-    }
-    throw new Error(data.error || 'Server proxy gagal mengambil spreadsheet');
-  } finally {
-    clearTimeout(timer);
-  }
-}
-
 interface CachedPayload {
   items: AudioItem[];
   headers: string[];
   syncedAt: string;
-  source: 'live' | 'server';
+  source: 'live';
 }
 
 function readCache(sheetId: string, gid: string): CachedPayload | null {
@@ -231,25 +201,7 @@ export async function syncTab(gid: string, options: SyncOptions = {}): Promise<S
     console.warn(`[sheetSync] direct fetch gagal untuk gid ${gid}:`, err);
   }
 
-  // 3. Server proxy
-  try {
-    const { items, headers } = await fetchViaServerProxy(sheetId, gid);
-    const result: SyncResult = {
-      items,
-      headers,
-      syncedAt: nowIso(),
-      source: 'server',
-      tabId: tab.id,
-      tabLabel: tab.label,
-      gid,
-    };
-    writeCache(sheetId, gid, { items, headers, syncedAt: result.syncedAt, source: 'server' });
-    return result;
-  } catch (err) {
-    console.warn(`[sheetSync] server proxy gagal untuk gid ${gid}:`, err);
-  }
-
-  // 4. Cache localStorage
+  // 3. Cache localStorage
   const cached = readCache(sheetId, gid);
   if (cached) {
     return {
@@ -263,7 +215,7 @@ export async function syncTab(gid: string, options: SyncOptions = {}): Promise<S
     };
   }
 
-  // 5. Snapshot bawaan — UI tidak pernah kosong
+  // 4. Snapshot bawaan — UI tidak pernah kosong
   const preloaded = await getPreloaded(tab.id, gid);
   return {
     items: preloaded,

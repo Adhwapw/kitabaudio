@@ -141,8 +141,8 @@ export const AboutPage: React.FC = () => {
             onRefresh={handleRefresh}
           />
           <span className="text-xs text-ink-soft">
-            Website mencoba beberapa jalur koneksi otomatis — langsung ke Google,
-            lewat server cadangan, lalu cache perangkat — supaya data sebisa mungkin selalu segar.
+            Website mencoba beberapa jalur koneksi otomatis — langsung ke Google, lalu cache
+            perangkat, lalu snapshot hasil crawl berkala — supaya data sebisa mungkin selalu segar.
           </span>
         </div>
 
