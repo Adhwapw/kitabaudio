@@ -1,8 +1,33 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+
+  /* Kertas & tinta — identitas visual "Kitab" */
+  --color-paper: #faf7f0;
+  --color-parchment: #f3eee1;
+  --color-vellum: #ede6d3;
+  --color-ink: #1c1917;
+  --color-ink-soft: #57534e;
+  --color-ink-faint: #a8a29e;
+
+  /* Kuningan (brass) — aksen utama */
+  --color-brass-50: #fbf7ec;
+  --color-brass-100: #f6ecd4;
+  --color-brass-200: #ecd7a8;
+  --color-brass-300: #dfba74;
+  --color-brass-400: #d19c4c;
+  --color-brass-500: #b57f33;
+  --color-brass-600: #96682a;
+  --color-brass-700: #775223;
+  --color-brass-800: #5f4322;
+  --color-brass-900: #4e3720;
+}
+
 :root {
-  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  color-scheme: dark light;
+  font-family: var(--font-sans);
+  color-scheme: light;
 }
 
 body {
@@ -10,17 +35,40 @@ body {
   padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #0b0f17;
-  color: #f1f5f9;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
   min-height: 100vh;
   overflow-x: hidden;
 }
 
-/* Custom scrollbar for horizontal category and tier strips on mobile */
+/* Tekstur kertas halus untuk latar */
+.paper-grain {
+  background-image:
+    radial-gradient(ellipse 80% 60% at 20% 0%, rgba(181, 127, 51, 0.06), transparent),
+    radial-gradient(ellipse 70% 50% at 90% 20%, rgba(28, 25, 23, 0.04), transparent);
+}
+
+/* Garis bingkai ganda khas sampul kitab */
+.kitab-frame {
+  box-shadow:
+    inset 0 0 0 1px rgba(28, 25, 23, 0.08),
+    inset 0 0 0 5px var(--color-paper),
+    inset 0 0 0 6px rgba(181, 127, 51, 0.35);
+}
+
+/* Scrollbar horizontal disembunyikan untuk strip kategori */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Eyebrow label khas editorial */
+.eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
 }
