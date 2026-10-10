@@ -2,7 +2,7 @@ import React from 'react';
 import { GitCompareArrows, ChevronRight, Check, ShoppingBag } from 'lucide-react';
 import { AudioItem } from '../types.ts';
 import { getTierColor, getSignatureColor, formatPrice } from '../utils/audioTheme.ts';
-import { AudioTemplateAvatar } from './AudioTemplateAvatar.tsx';
+import { ProductImage } from './ProductImage.tsx';
 
 interface AudioCardProps {
   item: AudioItem;
@@ -29,13 +29,7 @@ export const AudioCard: React.FC<AudioCardProps> = ({
         className="group flex cursor-pointer items-center justify-between gap-3 rounded-2xl border border-ink/10 bg-white p-3.5 shadow-sm transition hover:border-brass-400 hover:shadow active:scale-[0.99]"
       >
         <div className="flex min-w-0 items-center gap-3.5">
-          <AudioTemplateAvatar
-            category={item.category}
-            name={item.name}
-            brand={item.brand}
-            tier={item.tier}
-            size="sm"
-          />
+          <ProductImage item={item} className="h-11 w-11 rounded-xl" avatarSize="sm" />
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
               <span className="truncate text-sm font-bold text-ink transition group-hover:text-brass-800">
@@ -88,13 +82,7 @@ export const AudioCard: React.FC<AudioCardProps> = ({
     >
       <div>
         <div className="mb-3.5 flex items-start justify-between gap-3">
-          <AudioTemplateAvatar
-            category={item.category}
-            name={item.name}
-            brand={item.brand}
-            tier={item.tier}
-            size="md"
-          />
+          <ProductImage item={item} className="h-20 w-20 rounded-2xl" avatarSize="md" />
           <div className="flex items-center gap-2">
             <span className={`rounded-full border px-2.5 py-0.5 text-xs font-black shadow-sm ${tierStyle.pillBg}`}>
               {item.tier}

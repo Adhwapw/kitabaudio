@@ -280,6 +280,8 @@ export function parseSpreadsheetRows(rows: string[][], tabCategory?: string): { 
       colIndexMap['kabel'] = idx;
     } else if (/(parametriceq|eq)/.test(k) && colIndexMap['eq'] === undefined) {
       colIndexMap['eq'] = idx;
+    } else if (/(gambar|foto|photo|picture|image)/.test(k) && colIndexMap['image'] === undefined) {
+      colIndexMap['image'] = idx;
     }
   });
 
@@ -426,6 +428,14 @@ export function parseSpreadsheetRows(rows: string[][], tabCategory?: string): { 
       if (row[idx]) rawRowDict[h] = row[idx].trim();
     });
 
+    // Extract product image URL (kolom "Gambar" di spreadsheet, bila ada)
+    let imageUrl: string | undefined;
+    if (colIndexMap['image'] !== undefined && row[colIndexMap['image']]) {
+      const cell = row[colIndexMap['image']].trim();
+      const urlMatch = cell.match(/https?:\/\/[^\s"']+/);
+      if (urlMatch) imageUrl = urlMatch[0];
+    }
+
     const item: AudioItem = {
       id: `item-${r}-${cleanKey(primaryName).slice(0, 15)}`,
       name: primaryName,
@@ -446,6 +456,7 @@ export function parseSpreadsheetRows(rows: string[][], tabCategory?: string): { 
       buyUrl: tokpedLink,
       shopeeUrl: shopeeLink,
       tiktokUrl: tiktokLink,
+      imageUrl,
       suitableEartips: colIndexMap['eartips'] !== undefined ? (row[colIndexMap['eartips']] || '').trim() : undefined,
       recommendedCable: colIndexMap['kabel'] !== undefined ? (row[colIndexMap['kabel']] || '').trim() : undefined,
       parametricEq: colIndexMap['eq'] !== undefined ? (row[colIndexMap['eq']] || '').trim() : undefined,
