@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   X, FileSpreadsheet, Link2, HelpCircle, CheckCircle2,
   AlertCircle, RefreshCw, RotateCcw,
@@ -22,6 +22,15 @@ export const SheetConfigModal: React.FC<SheetConfigModalProps> = ({ isOpen, onCl
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [testing, setTesting] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -64,9 +73,12 @@ export const SheetConfigModal: React.FC<SheetConfigModalProps> = ({ isOpen, onCl
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-ink/60 p-0 backdrop-blur-sm sm:items-center sm:p-4" onClick={onClose}>
+    <div className="modal modal-open modal-bottom sm:modal-middle" onClick={onClose} role="presentation">
       <div
-        className="max-h-[92vh] w-full max-w-xl overflow-hidden rounded-t-3xl bg-paper shadow-2xl sm:rounded-3xl"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Sumber spreadsheet"
+        className="modal-box max-h-[92vh] w-full max-w-xl overflow-hidden bg-base-100 p-0"
         onClick={e => e.stopPropagation()}
       >
         <div className="flex items-center justify-between border-b border-ink/10 bg-white/60 p-4">
@@ -79,7 +91,7 @@ export const SheetConfigModal: React.FC<SheetConfigModalProps> = ({ isOpen, onCl
               <p className="text-xs text-ink-soft">Pakai sheet-mu sendiri atau kembali ke bawaan</p>
             </div>
           </div>
-          <button onClick={onClose} className="rounded-full p-1.5 text-ink-faint transition hover:bg-ink/5 hover:text-ink">
+          <button onClick={onClose} className="btn btn-circle btn-ghost btn-sm" aria-label="Tutup pengaturan spreadsheet">
             <X className="h-5 w-5" />
           </button>
         </div>
@@ -87,23 +99,26 @@ export const SheetConfigModal: React.FC<SheetConfigModalProps> = ({ isOpen, onCl
         <div className="no-scrollbar max-h-[70vh] space-y-5 overflow-y-auto p-4 sm:p-6">
           <form onSubmit={handleTestAndSave} className="space-y-4">
             <div>
-              <label className="eyebrow mb-1.5 block text-ink-soft">Link / Sheet ID Google Spreadsheet</label>
-              <div className="relative">
-                <Link2 className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-faint" />
+              <label className="label" htmlFor="sheet-source-input">
+                <span className="label-text font-bold">Link / Sheet ID Google Spreadsheet</span>
+              </label>
+              <label className="input w-full">
+                <Link2 className="h-4 w-4 text-base-content/60" aria-hidden="true" />
                 <input
+                  id="sheet-source-input"
                   type="text"
                   value={urlInput}
                   onChange={e => setUrlInput(e.target.value)}
                   placeholder="https://docs.google.com/spreadsheets/d/…/edit"
-                  className="w-full rounded-2xl border border-ink/15 bg-white py-3 pl-10 pr-4 font-mono text-xs text-ink placeholder:text-ink-faint focus:border-brass-500 focus:outline-none focus:ring-2 focus:ring-brass-200"
+                  className="grow font-mono text-xs"
                 />
-              </div>
+              </label>
               <p className="mt-1 text-[11px] text-ink-faint">Bisa URL lengkap atau cukup Sheet ID-nya saja.</p>
             </div>
 
             {error && (
-              <div className="flex items-start gap-2 rounded-2xl border border-rose-200 bg-rose-50 p-3.5 text-xs text-rose-800">
-                <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+              <div role="alert" className="alert alert-error text-xs">
+                <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
                 <div>
                   <div className="font-bold">Gagal membaca spreadsheet</div>
                   <div className="mt-0.5">{error}</div>
@@ -111,8 +126,8 @@ export const SheetConfigModal: React.FC<SheetConfigModalProps> = ({ isOpen, onCl
               </div>
             )}
             {success && (
-              <div className="flex items-center gap-2 rounded-2xl border border-emerald-200 bg-emerald-50 p-3.5 text-xs font-semibold text-emerald-800">
-                <CheckCircle2 className="h-4 w-4 shrink-0" /> {success}
+              <div role="status" className="alert alert-success text-xs font-semibold">
+                <CheckCircle2 className="h-4 w-4 shrink-0" aria-hidden="true" /> {success}
               </div>
             )}
 
@@ -120,7 +135,7 @@ export const SheetConfigModal: React.FC<SheetConfigModalProps> = ({ isOpen, onCl
               <button
                 type="submit"
                 disabled={testing}
-                className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-ink py-3 text-xs font-bold text-paper transition hover:bg-brass-800 active:scale-95 disabled:opacity-50"
+                className="btn btn-primary flex-1"
               >
                 <RefreshCw className={`h-4 w-4 ${testing ? 'animate-spin' : ''}`} />
                 {testing ? 'Menguji koneksi…' : 'Uji & Simpan Sumber'}
@@ -128,7 +143,7 @@ export const SheetConfigModal: React.FC<SheetConfigModalProps> = ({ isOpen, onCl
               <button
                 type="button"
                 onClick={handleReset}
-                className="flex items-center gap-1.5 rounded-2xl border border-ink/15 bg-white px-4 py-3 text-xs font-bold text-ink-soft transition hover:border-brass-400 hover:text-ink"
+                className="btn btn-outline"
                 title="Kembali ke spreadsheet bawaan"
               >
                 <RotateCcw className="h-3.5 w-3.5" /> Bawaan
@@ -161,7 +176,7 @@ export const SheetConfigModal: React.FC<SheetConfigModalProps> = ({ isOpen, onCl
         <div className="border-t border-ink/10 bg-white/60 p-4">
           <button
             onClick={onClose}
-            className="w-full rounded-2xl bg-ink/5 py-2.5 text-xs font-bold text-ink transition hover:bg-ink/10 sm:w-auto sm:px-8"
+            className="btn btn-ghost w-full sm:w-auto"
           >
             Selesai
           </button>

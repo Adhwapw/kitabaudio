@@ -54,7 +54,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectItem }) => {
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <button
                 onClick={() => navigate({ page: 'catalog' })}
-                className="group flex items-center gap-2 rounded-full bg-ink px-6 py-3.5 text-sm font-bold text-paper shadow-lg transition hover:bg-brass-800 active:scale-95"
+                className="btn btn-primary group rounded-full shadow-lg"
               >
                 <Search className="h-4 w-4" />
                 Jelajahi Katalog
@@ -62,7 +62,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectItem }) => {
               </button>
               <button
                 onClick={() => navigate({ page: 'tierlist' })}
-                className="flex items-center gap-2 rounded-full border border-ink/15 bg-white/60 px-6 py-3.5 text-sm font-bold text-ink transition hover:border-brass-500 hover:text-brass-800 active:scale-95"
+                className="btn btn-outline rounded-full"
               >
                 <Trophy className="h-4 w-4" />
                 Lihat Tier List
@@ -76,7 +76,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectItem }) => {
                 { value: `${totalGear}+`, label: 'Perangkat terkurasi' },
                 { value: 'Otomatis', label: 'Sync spreadsheet' },
               ].map(s => (
-                <div key={s.label} className="rounded-2xl border border-ink/10 bg-white/70 px-4 py-3 backdrop-blur">
+                <div key={s.label} className="card card-border px-4 py-3">
                   <div className="font-display text-2xl font-bold text-ink">{s.value}</div>
                   <div className="mt-0.5 text-[11px] font-semibold uppercase tracking-wider text-ink-faint">{s.label}</div>
                 </div>
@@ -95,7 +95,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectItem }) => {
           </div>
           <button
             onClick={() => navigate({ page: 'catalog' })}
-            className="hidden items-center gap-1 text-sm font-bold text-brass-700 hover:text-brass-800 sm:flex"
+            className="btn btn-ghost btn-sm hidden text-brass-700 hover:text-brass-800 sm:flex"
           >
             Semua katalog <ChevronRight className="h-4 w-4" />
           </button>
@@ -106,7 +106,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectItem }) => {
             <button
               key={tab.id}
               onClick={() => navigate({ page: 'catalog', tabId: tab.id })}
-              className="group rounded-3xl border border-ink/10 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-brass-400 hover:shadow-md active:scale-[0.99]"
+              className="card card-border group p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-brass-400 hover:shadow-md active:scale-[0.99]"
             >
               <span className="mb-3 flex h-11 w-11 items-center justify-center rounded-2xl bg-parchment text-brass-700 transition group-hover:bg-brass-100">
                 <CategoryIcon name={tab.iconName} className="h-5 w-5" />
@@ -134,7 +134,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectItem }) => {
             </div>
             <button
               onClick={() => navigate({ page: 'catalog', tabId: 'iem' })}
-              className="hidden items-center gap-1 text-sm font-bold text-brass-700 hover:text-brass-800 sm:flex"
+              className="btn btn-ghost btn-sm hidden text-brass-700 hover:text-brass-800 sm:flex"
             >
               Semua IEM <ChevronRight className="h-4 w-4" />
             </button>
@@ -143,7 +143,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectItem }) => {
           {iemStatus === 'syncing' && topPicks.length === 0 ? (
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {[0, 1, 2].map(i => (
-                <div key={i} className="h-28 animate-pulse rounded-3xl bg-ink/5" />
+                <div key={i} className="skeleton h-28" />
               ))}
             </div>
           ) : (
@@ -154,12 +154,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectItem }) => {
                   <button
                     key={item.id}
                     onClick={() => onSelectItem(item)}
-                    className="group flex items-center gap-4 rounded-3xl border border-ink/10 bg-white p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-brass-400 hover:shadow-md"
+                    className="card card-border group flex-row items-center gap-4 p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-brass-400 hover:shadow-md"
                   >
                     <AudioTemplateAvatar category={item.category} name={item.name} brand={item.brand} tier={item.tier} size="md" />
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
-                        <span className={`rounded-full border px-2 py-0.5 text-[10px] font-black ${tierStyle.pillBg}`}>
+                        <span className={`badge badge-sm font-black ${tierStyle.pillBg}`}>
                           {item.tier}
                         </span>
                         <span className="truncate text-[11px] font-semibold uppercase tracking-wide text-ink-faint">{item.brand}</span>
@@ -198,9 +198,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectItem }) => {
               desc: 'Filter berdasar budget dan karakter suara, baca impresi reviewer, lalu bandingkan dua gear sebelum checkout.',
             },
           ].map((s, i) => (
-            <div key={s.title} className="kitab-frame rounded-3xl bg-white p-6">
+            <div key={s.title} className="card card-border kitab-frame p-6">
               <div className="mb-4 flex items-center justify-between">
-                <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-ink text-paper">
+                <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary text-primary-content">
                   <s.icon className="h-5 w-5" />
                 </span>
                 <span className="font-display text-4xl font-black text-ink/10">{i + 1}</span>
@@ -224,7 +224,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectItem }) => {
           </div>
           <button
             onClick={() => navigate({ page: 'about' })}
-            className="flex shrink-0 items-center gap-1.5 rounded-full bg-ink px-5 py-2.5 text-sm font-bold text-paper transition hover:bg-brass-800 active:scale-95"
+            className="btn btn-primary shrink-0 rounded-full"
           >
             Baca catatannya <ArrowRight className="h-4 w-4" />
           </button>

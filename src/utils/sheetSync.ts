@@ -19,6 +19,7 @@
 import Papa from 'papaparse';
 import { parseSpreadsheetRows } from './sheetParser.ts';
 import { DEFAULT_SHEET_ID, getTabByGid } from '../data/spreadsheetTabs.ts';
+import { applyProductImages } from '../data/productImages.ts';
 import { AudioItem } from '../types.ts';
 
 export type SyncSource = 'live' | 'cache' | 'preloaded';
@@ -183,7 +184,10 @@ export async function syncTab(gid: string, options: SyncOptions = {}): Promise<S
   try {
     const csvText = await fetchDirectCsv(sheetId, gid);
     const rows = Papa.parse<string[]>(csvText, { skipEmptyLines: true }).data as string[][];
-    const { items, headers } = parseSpreadsheetRows(rows, tab.id);
+    const { items: rawItems, headers } = parseSpreadsheetRows(rows, tab.id);
+    // Foto kurasi ditempelkan ke item live yang belum punya foto dari
+    // spreadsheet. Kolom "Gambar" spreadsheet tetap menang (tidak ditimpa).
+    const items = applyProductImages(tab.id, rawItems);
     if (items.length > 0) {
       const result: SyncResult = {
         items,
@@ -205,7 +209,7 @@ export async function syncTab(gid: string, options: SyncOptions = {}): Promise<S
   const cached = readCache(sheetId, gid);
   if (cached) {
     return {
-      items: cached.items,
+      items: applyProductImages(tab.id, cached.items),
       headers: cached.headers,
       syncedAt: cached.syncedAt,
       source: 'cache',

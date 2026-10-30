@@ -32,8 +32,8 @@ export const SPREADSHEET_TABS: SpreadsheetTab[] = [
     category: "TWS",
     description: "True Wireless Stereo (ANC, Codec LDAC/AptX, Sound Quality)",
     iconName: "Radio",
-    badge: "102+ Gear",
-    countEstimate: 102
+    badge: "95+ Gear",
+    countEstimate: 95
   },
   {
     id: "tws-nokaret",
@@ -60,8 +60,8 @@ export const SPREADSHEET_TABS: SpreadsheetTab[] = [
     category: "Headphone",
     description: "Headphone Open-back & Closed-back audiophile",
     iconName: "Headset",
-    badge: "42+ Gear",
-    countEstimate: 42
+    badge: "43+ Gear",
+    countEstimate: 43
   },
   {
     id: "w.headphone",
@@ -70,7 +70,7 @@ export const SPREADSHEET_TABS: SpreadsheetTab[] = [
     category: "Wireless Headphone",
     description: "Headphone Bluetooth dengan ANC & Mic",
     iconName: "Wifi",
-    countEstimate: 43
+    countEstimate: 45
   },
   {
     id: "dongle-dac",
@@ -79,8 +79,8 @@ export const SPREADSHEET_TABS: SpreadsheetTab[] = [
     category: "Dongle",
     description: "DAC Portable Type-C / Lightning untuk HP & Laptop",
     iconName: "Usb",
-    badge: "75+ Gear",
-    countEstimate: 75
+    badge: "72+ Gear",
+    countEstimate: 72
   },
   {
     id: "DesktopDAC",

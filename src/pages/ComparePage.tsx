@@ -42,7 +42,7 @@ export const ComparePage: React.FC<ComparePageProps> = ({
         </p>
         <button
           onClick={() => navigate({ page: 'catalog' })}
-          className="mt-6 inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-bold text-paper transition hover:bg-brass-800 active:scale-95"
+          className="btn btn-primary mt-6 rounded-full"
         >
           Buka katalog <ArrowRight className="h-4 w-4" />
         </button>
@@ -63,7 +63,7 @@ export const ComparePage: React.FC<ComparePageProps> = ({
         </div>
         <button
           onClick={onClearAll}
-          className="flex items-center gap-1.5 rounded-full border border-ink/10 bg-white px-4 py-2 text-xs font-bold text-rose-700 transition hover:bg-rose-50"
+          className="btn btn-ghost btn-sm border border-base-content/10 text-error"
         >
           <RotateCcw className="h-3.5 w-3.5" /> Kosongkan
         </button>
@@ -72,19 +72,20 @@ export const ComparePage: React.FC<ComparePageProps> = ({
       {/* Kartu header A vs B */}
       <div className="mb-4 grid grid-cols-2 gap-3">
         {[a, b].map((item, idx) => (
-          <div key={idx} className="relative rounded-3xl border border-ink/10 bg-white p-4 shadow-sm sm:p-5">
+          <div key={idx} className="card card-border relative p-4 shadow-sm sm:p-5">
             {item ? (
               <>
                 <button
                   onClick={() => onRemoveItem(item.id)}
-                  className="absolute right-3 top-3 rounded-full p-1.5 text-ink-faint transition hover:bg-rose-50 hover:text-rose-600"
+                  className="btn btn-circle btn-ghost btn-sm absolute right-3 top-3"
                   title="Hapus dari perbandingan"
+                  aria-label={`Hapus ${item.name} dari perbandingan`}
                 >
                   <Trash2 className="h-4 w-4" />
                 </button>
                 <button onClick={() => onSelectItem(item)} className="block w-full text-left">
                   <AudioTemplateAvatar category={item.category} name={item.name} brand={item.brand} tier={item.tier} size="md" className="mb-3" />
-                  <span className={`inline-block rounded-full border px-2 py-0.5 text-[10px] font-black ${getTierColor(item.tier).pillBg}`}>
+                  <span className={`badge badge-sm font-black ${getTierColor(item.tier).pillBg}`}>
                     Tier {item.tier}
                   </span>
                   <h3 className="mt-1.5 truncate text-sm font-bold text-ink sm:text-base">{item.name}</h3>
@@ -107,13 +108,13 @@ export const ComparePage: React.FC<ComparePageProps> = ({
       </div>
 
       {a && b && (
-        <div className="overflow-hidden rounded-3xl border border-ink/10 bg-white shadow-sm">
+        <div className="card card-border overflow-hidden shadow-sm">
           <Row label="Tier">
             {renderCell(a, it => (
-              <span className={`inline-block rounded-full border px-2.5 py-0.5 text-xs font-black ${getTierColor(it.tier).pillBg}`}>{it.tier}</span>
+              <span className={`badge font-black ${getTierColor(it.tier).pillBg}`}>{it.tier}</span>
             ))}
             {renderCell(b, it => (
-              <span className={`inline-block rounded-full border px-2.5 py-0.5 text-xs font-black ${getTierColor(it.tier).pillBg}`}>{it.tier}</span>
+              <span className={`badge font-black ${getTierColor(it.tier).pillBg}`}>{it.tier}</span>
             ))}
           </Row>
           <Row label="Harga">
@@ -122,10 +123,10 @@ export const ComparePage: React.FC<ComparePageProps> = ({
           </Row>
           <Row label="Karakter">
             {renderCell(a, it => (
-              <span className={`inline-block rounded-full border px-2.5 py-0.5 text-xs font-semibold ${getSignatureColor(it.soundSignature)}`}>{it.soundSignature}</span>
+              <span className={`badge font-semibold ${getSignatureColor(it.soundSignature)}`}>{it.soundSignature}</span>
             ))}
             {renderCell(b, it => (
-              <span className={`inline-block rounded-full border px-2.5 py-0.5 text-xs font-semibold ${getSignatureColor(it.soundSignature)}`}>{it.soundSignature}</span>
+              <span className={`badge font-semibold ${getSignatureColor(it.soundSignature)}`}>{it.soundSignature}</span>
             ))}
           </Row>
           <Row label="Driver">
@@ -166,12 +167,12 @@ export const ComparePage: React.FC<ComparePageProps> = ({
             {renderCell(a, it => (
               <div className="flex flex-wrap gap-2">
                 {it.buyUrl && (
-                  <a href={it.buyUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 rounded-full bg-emerald-600 px-3 py-1.5 text-[11px] font-bold text-white transition hover:bg-emerald-700">
+                  <a href={it.buyUrl} target="_blank" rel="noopener noreferrer" className="btn btn-xs bg-emerald-600 text-white hover:bg-emerald-700">
                     <ShoppingBag className="h-3 w-3" /> Tokopedia
                   </a>
                 )}
                 {it.shopeeUrl && (
-                  <a href={it.shopeeUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 rounded-full bg-orange-500 px-3 py-1.5 text-[11px] font-bold text-white transition hover:bg-orange-600">
+                  <a href={it.shopeeUrl} target="_blank" rel="noopener noreferrer" className="btn btn-xs bg-orange-500 text-white hover:bg-orange-600">
                     <ExternalLink className="h-3 w-3" /> Shopee
                   </a>
                 )}
@@ -180,12 +181,12 @@ export const ComparePage: React.FC<ComparePageProps> = ({
             {renderCell(b, it => (
               <div className="flex flex-wrap gap-2">
                 {it.buyUrl && (
-                  <a href={it.buyUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 rounded-full bg-emerald-600 px-3 py-1.5 text-[11px] font-bold text-white transition hover:bg-emerald-700">
+                  <a href={it.buyUrl} target="_blank" rel="noopener noreferrer" className="btn btn-xs bg-emerald-600 text-white hover:bg-emerald-700">
                     <ShoppingBag className="h-3 w-3" /> Tokopedia
                   </a>
                 )}
                 {it.shopeeUrl && (
-                  <a href={it.shopeeUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 rounded-full bg-orange-500 px-3 py-1.5 text-[11px] font-bold text-white transition hover:bg-orange-600">
+                  <a href={it.shopeeUrl} target="_blank" rel="noopener noreferrer" className="btn btn-xs bg-orange-500 text-white hover:bg-orange-600">
                     <ExternalLink className="h-3 w-3" /> Shopee
                   </a>
                 )}
@@ -196,10 +197,10 @@ export const ComparePage: React.FC<ComparePageProps> = ({
       )}
 
       {a && !b && (
-        <p className="mt-4 flex items-center gap-2 rounded-2xl border border-brass-300 bg-brass-50 p-4 text-xs text-brass-900">
-          <Minus className="h-4 w-4" />
-          Tambahkan satu gear lagi untuk melihat tabel perbandingan lengkap.
-        </p>
+        <div role="note" className="alert mt-4 text-xs">
+          <Minus className="h-4 w-4" aria-hidden="true" />
+          <span>Tambahkan satu gear lagi untuk melihat tabel perbandingan lengkap.</span>
+        </div>
       )}
     </div>
   );

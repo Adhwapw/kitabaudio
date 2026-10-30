@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Search, RefreshCw, AlertTriangle, Layers, GitCompareArrows } from 'lucide-react';
+import { Search, AlertTriangle, Layers, GitCompareArrows } from 'lucide-react';
 import { navigate } from '../router.ts';
 import { SPREADSHEET_TABS, getTabById } from '../data/spreadsheetTabs.ts';
 import { useTabData, useSyncStatus, setActiveGid } from '../data/sheetStore.ts';
@@ -127,9 +127,7 @@ export const CatalogPage: React.FC<CatalogPageProps> = ({
             <button
               key={tab.id}
               onClick={() => navigate({ page: 'catalog', tabId: tab.id })}
-              className={`flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold transition ${
-                active ? 'bg-ink text-paper shadow' : 'border border-ink/10 bg-white text-ink-soft hover:border-brass-400 hover:text-ink'
-              }`}
+              className={`btn btn-sm shrink-0 ${active ? 'btn-primary' : 'btn-ghost border border-base-content/10 bg-base-100'}`}
             >
               <CategoryIcon name={tab.iconName} className="h-3.5 w-3.5" />
               {tab.label}
@@ -138,7 +136,7 @@ export const CatalogPage: React.FC<CatalogPageProps> = ({
         })}
         <button
           onClick={() => setIsTabSelectorOpen(true)}
-          className="flex shrink-0 items-center gap-1.5 rounded-full border border-dashed border-ink/20 bg-white/50 px-4 py-2 text-xs font-bold text-ink-soft transition hover:border-brass-500 hover:text-brass-800"
+          className="btn btn-dash btn-sm shrink-0"
         >
           <Layers className="h-3.5 w-3.5" /> Semua kategori
         </button>
@@ -146,18 +144,16 @@ export const CatalogPage: React.FC<CatalogPageProps> = ({
 
       {/* Peringatan data tidak segar */}
       {showStaleWarning && (
-        <div className="mb-4 flex items-center justify-between gap-3 rounded-2xl border border-amber-300 bg-amber-50 p-3.5 text-xs text-amber-900">
-          <div className="flex items-center gap-2">
-            <AlertTriangle className="h-4 w-4 shrink-0 text-amber-600" />
-            <span>
-              {result.source === 'cache'
-                ? 'Belum bisa menjangkau spreadsheet — menampilkan data terakhir yang tersimpan di perangkatmu.'
-                : 'Belum bisa menjangkau spreadsheet — menampilkan data bawaan.'}
-            </span>
-          </div>
+        <div role="alert" className="alert alert-warning mb-4 text-xs">
+          <AlertTriangle className="h-4 w-4 shrink-0" aria-hidden="true" />
+          <span>
+            {result.source === 'cache'
+              ? 'Belum bisa menjangkau spreadsheet. Menampilkan data terakhir yang tersimpan di perangkatmu.'
+              : 'Belum bisa menjangkau spreadsheet. Menampilkan data bawaan.'}
+          </span>
           <button
             onClick={() => refresh(true)}
-            className="shrink-0 rounded-xl bg-amber-600 px-3 py-1.5 font-bold text-white transition hover:bg-amber-700"
+            className="btn btn-sm btn-neutral shrink-0"
           >
             Coba lagi
           </button>
@@ -165,24 +161,25 @@ export const CatalogPage: React.FC<CatalogPageProps> = ({
       )}
 
       {/* Pencarian */}
-      <div className="relative mb-4">
-        <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-faint" />
+      <label className="input mb-4 w-full">
+        <Search className="h-4 w-4 text-base-content/60" aria-hidden="true" />
         <input
           type="text"
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
-          placeholder={`Cari di ${activeTab.label} — mis. brand, tipe driver, karakter suara…`}
-          className="w-full rounded-2xl border border-ink/10 bg-white py-3 pl-11 pr-10 text-sm text-ink shadow-sm placeholder:text-ink-faint focus:border-brass-500 focus:outline-none focus:ring-2 focus:ring-brass-200"
+          placeholder={`Cari di ${activeTab.label}, mis. brand, tipe driver, karakter suara`}
+          aria-label={`Cari di ${activeTab.label}`}
+          className="grow text-sm"
         />
         {searchQuery && (
           <button
             onClick={() => setSearchQuery('')}
-            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg bg-ink/5 px-2 py-0.5 text-xs font-bold text-ink-soft hover:bg-ink/10"
+            className="btn btn-ghost btn-xs"
           >
             Hapus
           </button>
         )}
-      </div>
+      </label>
 
       {/* Filter */}
       <FilterControls
@@ -205,20 +202,20 @@ export const CatalogPage: React.FC<CatalogPageProps> = ({
       {/* Daftar gear */}
       {status === 'syncing' && items.length === 0 ? (
         <div className="py-20 text-center">
-          <RefreshCw className="mx-auto h-8 w-8 animate-spin text-brass-600" />
+          <span className="loading loading-spinner loading-lg text-secondary" aria-hidden="true" />
           <p className="mt-3 text-sm font-bold text-ink">Menyinkronkan dari spreadsheet…</p>
           <p className="mt-1 text-xs text-ink-faint">Mengambil data tab {activeTab.label} langsung dari Google Sheets</p>
         </div>
       ) : filteredItems.length === 0 ? (
-        <div className="rounded-3xl border border-ink/10 bg-white p-10 text-center">
-          <Search className="mx-auto mb-3 h-10 w-10 text-ink/20" />
+        <div className="card card-border p-10 text-center">
+          <Search className="mx-auto mb-3 h-10 w-10 text-ink/20" aria-hidden="true" />
           <h3 className="font-bold text-ink">Tidak ada gear yang cocok</h3>
           <p className="mx-auto mt-1 max-w-sm text-xs text-ink-soft">
             Coba longgarkan kata kunci atau filter yang kamu pakai.
           </p>
           <button
             onClick={handleResetFilters}
-            className="mt-4 rounded-full bg-ink px-5 py-2.5 text-xs font-bold text-paper transition hover:bg-brass-800"
+            className="btn btn-primary btn-sm mt-4 rounded-full"
           >
             Reset semua filter
           </button>
@@ -255,7 +252,7 @@ export const CatalogPage: React.FC<CatalogPageProps> = ({
       {compareItems.length > 0 && (
         <button
           onClick={() => navigate({ page: 'compare' })}
-          className="fixed bottom-20 right-4 z-40 flex items-center gap-2 rounded-full bg-ink px-5 py-3.5 text-sm font-bold text-paper shadow-xl transition hover:bg-brass-800 active:scale-95 md:bottom-8 md:right-8"
+          className="btn btn-primary fixed bottom-20 right-4 z-40 rounded-full shadow-xl md:bottom-8 md:right-8"
         >
           <GitCompareArrows className="h-4 w-4" />
           Bandingkan ({compareItems.length})

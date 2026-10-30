@@ -1,18 +1,71 @@
 @import "tailwindcss";
 
+@plugin "daisyui" {
+  themes: kitab --default;
+}
+
+/*
+ * Tema daisyUI "kitab": satu-satunya tema yang dikirim.
+ * Alasan tiap peran warna (R-31):
+ * - base: kertas krem yang sudah jadi identitas Kitab, bukan putih steril.
+ * - primary: tinta, karena semua aksi utama sebelumnya memang tombol tinta.
+ * - secondary: kuningan, dipakai seperlunya untuk penanda aktif dan harga.
+ * - accent: kuningan muda, hanya untuk sorotan kecil, bukan tombol utama.
+ * - neutral: tinta lembut untuk teks sekunder dan permukaan gelap sekunder.
+ * Radius dibedakan per peran agar tidak semua elemen berbentuk pil:
+ * kotak kartu lebih besar dari bidang isian dan tombol.
+ */
+@plugin "daisyui/theme" {
+  name: "kitab";
+  default: true;
+  color-scheme: light;
+
+  --color-base-100: #faf7f0;
+  --color-base-200: #f3eee1;
+  --color-base-300: #ede6d3;
+  --color-base-content: #1c1917;
+  --color-primary: #1c1917;
+  --color-primary-content: #faf7f0;
+  --color-secondary: #96682a;
+  --color-secondary-content: #ffffff;
+  --color-accent: #d19c4c;
+  --color-accent-content: #1c1917;
+  --color-neutral: #57534e;
+  --color-neutral-content: #faf7f0;
+  --color-info: #075985;
+  --color-info-content: #ffffff;
+  --color-success: #166534;
+  --color-success-content: #ffffff;
+  --color-warning: #92400e;
+  --color-warning-content: #ffffff;
+  --color-error: #991b1b;
+  --color-error-content: #ffffff;
+
+  --radius-selector: 0.75rem;
+  --radius-field: 0.75rem;
+  --radius-box: 1.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+}
+
 @theme {
   --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-display: "Fraunces", Georgia, "Times New Roman", serif;
 
-  /* Kertas & tinta — identitas visual "Kitab" */
+  /* Kertas dan tinta, dipertahankan sebagai utilitas lama agar
+     komponen yang belum dimigrasi penuh tidak berubah warna. */
   --color-paper: #faf7f0;
   --color-parchment: #f3eee1;
   --color-vellum: #ede6d3;
   --color-ink: #1c1917;
   --color-ink-soft: #57534e;
-  --color-ink-faint: #a8a29e;
+  /* Digelapkan dari #a8a29e karena rasio kontrasnya hanya 2,36:1 di atas
+     kertas dan gagal WCAG AA. Nilai baru 5,37:1, tetap terasa redup
+     dibanding tinta utama tanpa mengorbankan keterbacaan. */
+  --color-ink-faint: #6b6560;
 
-  /* Kuningan (brass) — aksen utama */
+  /* Kuningan (brass), aksen utama */
   --color-brass-50: #fbf7ec;
   --color-brass-100: #f6ecd4;
   --color-brass-200: #ecd7a8;
@@ -39,6 +92,21 @@ body {
   color: var(--color-ink);
   min-height: 100vh;
   overflow-x: hidden;
+}
+
+/* Semua kontrol yang bisa diklik menunjukkan kursor pointer (R-39). */
+button:not(:disabled),
+[role="button"] {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: not-allowed;
+}
+
+/* Fokus keyboard yang jelas, memakai kuningan agar terlihat di atas kertas. */
+:focus-visible {
+  outline: 2px solid var(--color-brass-600);
+  outline-offset: 2px;
 }
 
 /* Tekstur kertas halus untuk latar */
@@ -71,4 +139,23 @@ body {
   font-weight: 800;
   letter-spacing: 0.22em;
   text-transform: uppercase;
+}
+
+/* Kartu daisyUI di Kitab tetap memakai kertas putih lembut, bukan base-100,
+   supaya kartu terbaca sebagai lembar terpisah dari latar kertas. */
+.card {
+  background-color: #ffffff;
+}
+
+/* Aturan tampil/sembunyi responsif untuk shell. Ditulis tanpa layer agar
+   menang atas display bawaan komponen daisyUI (navbar-center, dock). */
+@media (max-width: 767px) {
+  .site-nav-desktop {
+    display: none;
+  }
+}
+@media (min-width: 768px) {
+  .mobile-dock {
+    display: none;
+  }
 }

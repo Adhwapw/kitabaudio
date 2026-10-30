@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { X, Search } from 'lucide-react';
 import { SPREADSHEET_TABS, SpreadsheetTab } from '../data/spreadsheetTabs.ts';
 import { CategoryIcon } from './CategoryIcon.tsx';
@@ -18,6 +18,15 @@ export const TabSelectorModal: React.FC<TabSelectorModalProps> = ({
 }) => {
   const [search, setSearch] = useState('');
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const filteredTabs = SPREADSHEET_TABS.filter(
@@ -28,11 +37,15 @@ export const TabSelectorModal: React.FC<TabSelectorModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-ink/60 p-4 backdrop-blur-sm"
+      className="modal modal-open"
       onClick={onClose}
+      role="presentation"
     >
       <div
-        className="flex max-h-[85vh] w-full max-w-2xl flex-col rounded-3xl border border-ink/10 bg-paper p-6 shadow-2xl"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Daftar isi kitab"
+        className="modal-box flex max-h-[85vh] w-full max-w-2xl flex-col bg-base-100"
         onClick={e => e.stopPropagation()}
       >
         <div className="flex items-center justify-between border-b border-ink/10 pb-4">
@@ -46,38 +59,41 @@ export const TabSelectorModal: React.FC<TabSelectorModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="flex h-8 w-8 items-center justify-center rounded-full bg-ink/5 text-ink-faint transition hover:bg-ink/10 hover:text-ink"
+            className="btn btn-circle btn-ghost btn-sm"
+            aria-label="Tutup daftar kategori"
           >
             <X className="h-4 w-4" />
           </button>
         </div>
 
         <div className="py-3">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-faint" />
+          <label className="input w-full">
+            <Search className="h-4 w-4 text-base-content/60" aria-hidden="true" />
             <input
               type="text"
               value={search}
               onChange={e => setSearch(e.target.value)}
-              placeholder="Cari kategori (IEM, TWS, Dongle, Speaker, Kabel)…"
-              className="w-full rounded-2xl border border-ink/10 bg-white py-2.5 pl-9 pr-4 text-sm text-ink placeholder:text-ink-faint focus:border-brass-500 focus:outline-none focus:ring-2 focus:ring-brass-200"
+              placeholder="Cari kategori (IEM, TWS, Dongle, Speaker, Kabel)"
+              aria-label="Cari kategori"
+              className="grow text-sm"
             />
-          </div>
+          </label>
         </div>
 
         <div className="no-scrollbar flex-1 space-y-2 overflow-y-auto py-2 pr-1">
           {filteredTabs.map(tab => {
             const isSelected = tab.gid === activeGid;
             return (
-              <div
+              <button
                 key={tab.id}
                 onClick={() => {
                   onSelectTab(tab);
                   onClose();
                 }}
-                className={`flex cursor-pointer items-center justify-between rounded-2xl border p-3.5 transition ${
+                aria-current={isSelected ? 'true' : undefined}
+                className={`flex w-full items-center justify-between rounded-2xl border p-3.5 text-left transition ${
                   isSelected
-                    ? 'border-ink bg-ink text-paper shadow'
+                    ? 'border-primary bg-primary text-primary-content shadow'
                     : 'border-ink/10 bg-white text-ink hover:border-brass-400 hover:shadow-sm'
                 }`}
               >
@@ -100,11 +116,11 @@ export const TabSelectorModal: React.FC<TabSelectorModalProps> = ({
                   </div>
                 </div>
                 {tab.countEstimate ? (
-                  <span className={`shrink-0 rounded-lg px-2 py-0.5 pl-3 text-xs font-semibold ${isSelected ? 'bg-white/20 text-paper' : 'bg-parchment text-ink-soft'}`}>
+                  <span className={`badge badge-sm shrink-0 ${isSelected ? 'bg-white/20 text-paper' : 'bg-base-200 text-base-content/70'}`}>
                     {tab.countEstimate}+ gear
                   </span>
                 ) : null}
-              </div>
+              </button>
             );
           })}
         </div>

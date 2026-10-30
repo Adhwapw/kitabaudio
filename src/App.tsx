@@ -91,38 +91,42 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className="hidden border-t border-ink/10 bg-parchment/60 md:block">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-6 py-8">
+      <footer className="hidden border-t border-base-content/10 bg-base-200/60 text-base-content md:block">
+        <div className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-between gap-4 px-6 py-8">
           <div className="flex items-center gap-3">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-ink text-paper">
-              <BookOpenText className="h-4 w-4" />
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-content">
+              <BookOpenText className="h-4 w-4" aria-hidden="true" />
             </span>
             <div>
               <div className="font-display font-bold">Kitab Audio</div>
-              <div className="text-xs text-ink-faint">Data tersinkron otomatis dari spreadsheet Fernanda Gunsan</div>
+              <div className="text-xs text-base-content/60">Data tersinkron otomatis dari spreadsheet Fernanda Gunsan</div>
             </div>
           </div>
-          <nav className="flex items-center gap-1 text-sm font-semibold text-ink-soft">
-            {(
-              [
-                ['Beranda', 'home'],
-                ['Katalog', 'catalog'],
-                ['Tier List', 'tierlist'],
-                ['Bandingkan', 'compare'],
-                ['Tentang', 'about'],
-              ] as const
-            ).map(([label, page]) => (
-              <a
-                key={page}
-                href={routeToPath({ page: page as PageId })}
-                onClick={(e) => handleLinkClick(e, { page: page as PageId })}
-                className="rounded-full px-3 py-1.5 transition hover:bg-ink/5 hover:text-ink"
-              >
-                {label}
-              </a>
-            ))}
+          <nav aria-label="Navigasi footer">
+            <ul className="menu menu-horizontal gap-1 px-1 text-sm font-semibold">
+              {(
+                [
+                  ['Beranda', 'home'],
+                  ['Katalog', 'catalog'],
+                  ['Tier List', 'tierlist'],
+                  ['Bandingkan', 'compare'],
+                  ['Tentang', 'about'],
+                ] as const
+              ).map(([label, page]) => (
+                <li key={page}>
+                  <a
+                    href={routeToPath({ page: page as PageId })}
+                    onClick={(e) => handleLinkClick(e, { page: page as PageId })}
+                    className={route.page === page ? 'menu-active' : undefined}
+                    aria-current={route.page === page ? 'page' : undefined}
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </nav>
-          <p className="text-xs text-ink-faint">Review bersifat subjektif • Trust your ears</p>
+          <p className="text-xs text-base-content/60">Review bersifat subjektif. Trust your ears</p>
         </div>
       </footer>
 

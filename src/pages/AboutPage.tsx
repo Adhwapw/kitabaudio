@@ -76,7 +76,7 @@ export const AboutPage: React.FC = () => {
     <div className="mx-auto max-w-4xl px-4 pb-10 pt-6 sm:px-6">
       {/* Header */}
       <div className="mb-8 text-center">
-        <span className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-3xl bg-ink text-paper shadow-lg">
+        <span className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-3xl bg-primary text-primary-content shadow-lg">
           <BookOpenText className="h-8 w-8" />
         </span>
         <p className="eyebrow mb-2 text-brass-700">Tentang</p>
@@ -88,7 +88,7 @@ export const AboutPage: React.FC = () => {
       </div>
 
       {/* Reviewer */}
-      <section className="kitab-frame mb-6 rounded-3xl bg-white p-6 sm:p-8">
+      <section className="card card-border kitab-frame mb-6 p-6 sm:p-8">
         <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
           <span className="font-display flex h-20 w-20 shrink-0 items-center justify-center rounded-3xl bg-brass-500 text-3xl font-black text-white shadow">
             FG
@@ -110,7 +110,7 @@ export const AboutPage: React.FC = () => {
         <h2 className="font-display mb-4 text-xl font-bold tracking-tight">Baca ini dulu woi!</h2>
         <div className="space-y-3">
           {GUIDELINES.map(g => (
-            <div key={g.title} className={`flex items-start gap-3 rounded-3xl border p-5 ${g.tone}`}>
+            <div key={g.title} className={`card card-border flex-row items-start gap-3 p-5 ${g.tone}`}>
               <g.icon className={`h-6 w-6 shrink-0 ${g.iconTone}`} />
               <div>
                 <h3 className="font-bold">{g.title}</h3>
@@ -122,7 +122,7 @@ export const AboutPage: React.FC = () => {
       </section>
 
       {/* Sumber data */}
-      <section className="mb-6 rounded-3xl border border-ink/10 bg-white p-6 sm:p-8">
+      <section className="card card-border mb-6 p-6 sm:p-8">
         <div className="mb-4 flex items-center gap-3">
           <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700">
             <FileSpreadsheet className="h-5 w-5" />
@@ -150,14 +150,14 @@ export const AboutPage: React.FC = () => {
           <button
             onClick={handleRefresh}
             disabled={refreshing}
-            className="flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-xs font-bold text-paper transition hover:bg-brass-800 active:scale-95 disabled:opacity-50"
+            className="btn btn-primary btn-sm rounded-full"
           >
             <RefreshCw className={`h-3.5 w-3.5 ${refreshing ? 'animate-spin' : ''}`} />
             {refreshing ? 'Menyinkronkan…' : 'Sinkronkan ulang sekarang'}
           </button>
           <button
             onClick={() => setIsConfigOpen(true)}
-            className="flex items-center gap-2 rounded-full border border-ink/15 bg-white px-5 py-2.5 text-xs font-bold text-ink transition hover:border-brass-500 hover:text-brass-800 active:scale-95"
+            className="btn btn-outline btn-sm rounded-full"
           >
             <Settings2 className="h-3.5 w-3.5" />
             Ganti sumber spreadsheet
@@ -174,9 +174,10 @@ export const AboutPage: React.FC = () => {
           {FAQS.map((f, i) => {
             const open = openFaq === i;
             return (
-              <div key={i} className="overflow-hidden rounded-2xl border border-ink/10 bg-white">
+              <div key={i} className="card card-border overflow-hidden">
                 <button
                   onClick={() => setOpenFaq(open ? null : i)}
+                  aria-expanded={open}
                   className="flex w-full items-center justify-between gap-3 p-4 text-left"
                 >
                   <span className="text-sm font-bold text-ink">{f.q}</span>
@@ -192,7 +193,7 @@ export const AboutPage: React.FC = () => {
       </section>
 
       {/* Dukung */}
-      <section className="flex items-center gap-4 rounded-3xl bg-ink p-6 text-paper sm:p-8">
+      <section className="card card-border flex-row items-center gap-4 bg-primary p-6 text-primary-content sm:p-8">
         <HeartHandshake className="h-10 w-10 shrink-0 text-brass-300" />
         <div>
           <h2 className="font-display text-xl font-bold">Terbantu dengan kitab ini?</h2>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   X,
   ExternalLink,
@@ -30,6 +30,16 @@ export const AudioDetailModal: React.FC<AudioDetailModalProps> = ({
   const [copied, setCopied] = useState(false);
   const [activeSubTab, setActiveSubTab] = useState<'overview' | 'tuning' | 'accessories'>('overview');
 
+  // Dialog bisa ditutup dengan Escape, sesuai aturan aksesibilitas keyboard.
+  useEffect(() => {
+    if (!item) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [item, onClose]);
+
   if (!item) return null;
 
   const tierStyle = getTierColor(item.tier);
@@ -54,11 +64,15 @@ export const AudioDetailModal: React.FC<AudioDetailModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-ink/60 p-0 backdrop-blur-sm sm:items-center sm:p-4"
+      className="modal modal-open modal-bottom sm:modal-middle"
       onClick={onClose}
+      role="presentation"
     >
       <div
-        className="flex max-h-[92vh] w-full max-w-xl flex-col overflow-hidden rounded-t-3xl border border-ink/10 bg-paper shadow-2xl sm:rounded-3xl"
+        role="dialog"
+        aria-modal="true"
+        aria-label={`Detail ${item.name}`}
+        className="modal-box flex max-h-[92vh] w-full max-w-xl flex-col overflow-hidden bg-base-100 p-0"
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
@@ -71,7 +85,7 @@ export const AudioDetailModal: React.FC<AudioDetailModalProps> = ({
           <div className="flex items-center gap-2">
             <button
               onClick={handleShare}
-              className="flex items-center gap-1.5 rounded-full border border-ink/10 bg-white px-3 py-1.5 text-xs font-semibold text-ink-soft transition hover:border-brass-400 hover:text-ink"
+              className="btn btn-ghost btn-sm border border-base-content/10"
               title="Salin ringkasan gear"
             >
               {copied ? (
@@ -88,7 +102,8 @@ export const AudioDetailModal: React.FC<AudioDetailModalProps> = ({
             </button>
             <button
               onClick={onClose}
-              className="flex h-8 w-8 items-center justify-center rounded-full text-ink-faint transition hover:bg-ink/5 hover:text-ink"
+              className="btn btn-circle btn-ghost btn-sm"
+              aria-label="Tutup detail"
             >
               <X className="h-4 w-4" />
             </button>
@@ -108,11 +123,11 @@ export const AudioDetailModal: React.FC<AudioDetailModalProps> = ({
                 <span className="font-display text-lg font-bold text-ink">
                   {formatPrice(item.priceNumeric, item.price)}
                 </span>
-                <span className={`rounded-full border px-2.5 py-0.5 text-xs font-black shadow-sm ${tierStyle.pillBg}`}>
+                <span className={`badge font-black shadow-sm ${tierStyle.pillBg}`}>
                   Tier {item.tier}
                 </span>
                 {item.soundScore && (
-                  <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-xs font-bold text-emerald-700">
+                  <span className="badge border border-emerald-200 bg-emerald-50 font-bold text-emerald-700">
                     ★ Skor {item.soundScore}
                   </span>
                 )}
@@ -121,7 +136,7 @@ export const AudioDetailModal: React.FC<AudioDetailModalProps> = ({
           </div>
 
           {/* Sub-tab */}
-          <div className="flex items-center gap-1 rounded-2xl border border-ink/10 bg-parchment/70 p-1">
+          <div role="tablist" className="tabs tabs-box">
             {(
               [
                 ['overview', 'Overview'],
@@ -131,10 +146,10 @@ export const AudioDetailModal: React.FC<AudioDetailModalProps> = ({
             ).map(([id, label]) => (
               <button
                 key={id}
+                role="tab"
+                aria-selected={activeSubTab === id}
                 onClick={() => setActiveSubTab(id)}
-                className={`flex-1 rounded-xl py-1.5 text-xs font-bold transition ${
-                  activeSubTab === id ? 'bg-ink text-paper shadow' : 'text-ink-faint hover:text-ink'
-                }`}
+                className={`tab flex-1 text-xs font-bold ${activeSubTab === id ? 'tab-active' : ''}`}
               >
                 {label}
               </button>
@@ -256,11 +271,8 @@ export const AudioDetailModal: React.FC<AudioDetailModalProps> = ({
         <div className="flex shrink-0 flex-wrap items-center justify-between gap-3 border-t border-ink/10 bg-white/60 p-4">
           <button
             onClick={() => onToggleCompare(item)}
-            className={`flex items-center gap-2 rounded-2xl border px-4 py-2.5 text-xs font-bold transition sm:text-sm ${
-              isCompared
-                ? 'border-ink bg-ink text-paper'
-                : 'border-ink/15 bg-white text-ink hover:border-brass-400'
-            }`}
+            aria-pressed={isCompared}
+            className={`btn ${isCompared ? 'btn-primary' : 'btn-outline'}`}
           >
             <GitCompareArrows className="h-4 w-4" />
             <span>{isCompared ? 'Sedang dibandingkan' : 'Bandingkan'}</span>
@@ -272,7 +284,7 @@ export const AudioDetailModal: React.FC<AudioDetailModalProps> = ({
                 href={item.buyUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 rounded-2xl bg-emerald-600 px-4 py-2.5 text-xs font-bold text-white transition hover:bg-emerald-700 sm:text-sm"
+                className="btn btn-sm bg-emerald-600 text-white hover:bg-emerald-700"
               >
                 <ShoppingBag className="h-4 w-4" />
                 <span>Tokopedia</span>
@@ -283,7 +295,7 @@ export const AudioDetailModal: React.FC<AudioDetailModalProps> = ({
                 href={item.shopeeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 rounded-2xl bg-orange-500 px-4 py-2.5 text-xs font-bold text-white transition hover:bg-orange-600 sm:text-sm"
+                className="btn btn-sm bg-orange-500 text-white hover:bg-orange-600"
               >
                 <ExternalLink className="h-4 w-4" />
                 <span>Shopee</span>

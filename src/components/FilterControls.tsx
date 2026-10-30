@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowUpDown, LayoutGrid, ListFilter, RotateCcw } from 'lucide-react';
+import { LayoutGrid, ListFilter, RotateCcw } from 'lucide-react';
 import { SoundSignature } from '../types.ts';
 
 export type SortOption = 'tier-desc' | 'tier-asc' | 'price-asc' | 'price-desc' | 'name-asc';
@@ -62,55 +62,56 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
   return (
     <div className="my-5 space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="no-scrollbar flex items-center gap-1.5 overflow-x-auto py-1">
-          <span className="mr-1 hidden text-xs font-bold text-ink-faint sm:inline">Tier:</span>
-          {TIERS.map(tier => {
-            const isSelected = selectedTier === tier;
-            return (
-              <button
-                key={tier}
-                onClick={() => onSelectTier(tier)}
-                className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-bold transition ${
-                  isSelected
-                    ? 'bg-ink text-paper shadow'
-                    : 'border border-ink/10 bg-white text-ink-soft hover:border-brass-400 hover:text-ink'
-                }`}
-              >
-                {tier === 'All' ? 'Semua' : tier}
-              </button>
-            );
-          })}
+        <div className="no-scrollbar flex items-center gap-1.5 overflow-x-auto py-1" role="group" aria-label="Filter tier">
+          <span className="mr-1 hidden text-xs font-bold text-base-content/60 sm:inline">Tier:</span>
+          <div className="join">
+            {TIERS.map(tier => {
+              const isSelected = selectedTier === tier;
+              return (
+                <button
+                  key={tier}
+                  onClick={() => onSelectTier(tier)}
+                  aria-pressed={isSelected}
+                  className={`btn btn-sm join-item ${isSelected ? 'btn-primary' : 'btn-ghost border border-base-content/10 bg-base-100'}`}
+                >
+                  {tier === 'All' ? 'Semua' : tier}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         <div className="flex items-center gap-2">
-          <div className="relative flex items-center">
-            <ArrowUpDown className="pointer-events-none absolute left-2.5 h-3.5 w-3.5 text-ink-faint" />
-            <select
-              value={sortBy}
-              onChange={e => onSortChange(e.target.value as SortOption)}
-              className="cursor-pointer rounded-full border border-ink/10 bg-white py-1.5 pl-8 pr-6 text-xs font-semibold text-ink shadow-sm focus:border-brass-400 focus:outline-none"
-            >
-              <option value="tier-desc">Tier terbaik</option>
-              <option value="price-asc">Harga termurah</option>
-              <option value="price-desc">Harga tertinggi</option>
-              <option value="name-asc">Nama (A–Z)</option>
-            </select>
-          </div>
+          <select
+            value={sortBy}
+            onChange={e => onSortChange(e.target.value as SortOption)}
+            aria-label="Urutkan katalog"
+            className="select select-sm w-auto font-semibold"
+          >
+            <option value="tier-desc">Tier terbaik</option>
+            <option value="price-asc">Harga termurah</option>
+            <option value="price-desc">Harga tertinggi</option>
+            <option value="name-asc">Nama (A–Z)</option>
+          </select>
 
-          <div className="flex items-center rounded-full border border-ink/10 bg-white p-0.5 shadow-sm">
+          <div className="join" role="group" aria-label="Tampilan katalog">
             <button
               onClick={() => onViewModeChange('grid')}
-              className={`rounded-full p-1.5 transition ${viewMode === 'grid' ? 'bg-ink text-paper' : 'text-ink-faint hover:text-ink'}`}
+              aria-pressed={viewMode === 'grid'}
+              aria-label="Tampilan kartu"
               title="Tampilan kartu"
+              className={`btn btn-sm btn-square join-item ${viewMode === 'grid' ? 'btn-primary' : 'btn-ghost border border-base-content/10 bg-base-100'}`}
             >
-              <LayoutGrid className="h-3.5 w-3.5" />
+              <LayoutGrid className="h-3.5 w-3.5" aria-hidden="true" />
             </button>
             <button
               onClick={() => onViewModeChange('compact')}
-              className={`rounded-full p-1.5 transition ${viewMode === 'compact' ? 'bg-ink text-paper' : 'text-ink-faint hover:text-ink'}`}
+              aria-pressed={viewMode === 'compact'}
+              aria-label="Tampilan ringkas"
               title="Tampilan ringkas"
+              className={`btn btn-sm btn-square join-item ${viewMode === 'compact' ? 'btn-primary' : 'btn-ghost border border-base-content/10 bg-base-100'}`}
             >
-              <ListFilter className="h-3.5 w-3.5" />
+              <ListFilter className="h-3.5 w-3.5" aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -118,18 +119,15 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
 
       <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
         <div className="flex flex-wrap items-center gap-2">
-          <div className="no-scrollbar flex items-center gap-1 overflow-x-auto">
+          <div className="no-scrollbar flex items-center gap-1 overflow-x-auto" role="group" aria-label="Filter budget">
             {BUDGETS.map(b => {
               const isSelected = selectedBudget === b.value;
               return (
                 <button
                   key={b.value}
                   onClick={() => onSelectBudget(b.value)}
-                  className={`shrink-0 rounded-xl px-2.5 py-1 text-[11px] font-semibold transition ${
-                    isSelected
-                      ? 'bg-brass-600 text-white shadow-sm'
-                      : 'border border-ink/10 bg-white text-ink-soft hover:border-brass-400 hover:text-ink'
-                  }`}
+                  aria-pressed={isSelected}
+                  className={`btn btn-xs ${isSelected ? 'btn-secondary' : 'btn-ghost border border-base-content/10 bg-base-100'}`}
                 >
                   {b.label}
                 </button>
@@ -140,7 +138,8 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
           <select
             value={selectedSignature}
             onChange={e => onSelectSignature(e.target.value)}
-            className="cursor-pointer rounded-xl border border-ink/10 bg-white px-2.5 py-1 text-[11px] font-semibold text-ink shadow-sm focus:border-brass-400 focus:outline-none"
+            aria-label="Filter karakter suara"
+            className="select select-xs w-auto font-semibold"
           >
             {SIGNATURES.map(sig => (
               <option key={sig.value} value={sig.value}>
@@ -150,16 +149,16 @@ export const FilterControls: React.FC<FilterControlsProps> = ({
           </select>
         </div>
 
-        <div className="flex items-center gap-2 text-ink-faint">
+        <div className="flex items-center gap-2 text-base-content/60">
           <span className="font-semibold">
             {totalFiltered} dari {totalAll} gear
           </span>
           {hasActiveFilters && (
             <button
               onClick={onResetFilters}
-              className="flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-bold text-rose-700 transition hover:bg-rose-50"
+              className="btn btn-ghost btn-xs text-error"
             >
-              <RotateCcw className="h-3 w-3" /> Reset
+              <RotateCcw className="h-3 w-3" aria-hidden="true" /> Reset
             </button>
           )}
         </div>
