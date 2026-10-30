@@ -90,7 +90,7 @@ export const AboutPage: React.FC = () => {
       {/* Reviewer */}
       <section className="card card-border kitab-frame mb-6 p-6 sm:p-8">
         <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center">
-          <span className="font-display flex h-20 w-20 shrink-0 items-center justify-center rounded-3xl bg-brass-500 text-3xl font-black text-white shadow">
+          <span className="font-display flex h-20 w-20 shrink-0 items-center justify-center rounded-3xl bg-primary text-3xl font-black text-white shadow">
             FG
           </span>
           <div className="flex-1">
@@ -193,11 +193,11 @@ export const AboutPage: React.FC = () => {
       </section>
 
       {/* Dukung */}
-      <section className="card card-border flex-row items-center gap-4 bg-primary p-6 text-primary-content sm:p-8">
-        <HeartHandshake className="h-10 w-10 shrink-0 text-brass-300" />
+      <section className="card card-border flex-row items-center gap-4 bg-midnight p-6 text-white sm:p-8">
+        <HeartHandshake className="h-10 w-10 shrink-0 text-white" />
         <div>
           <h2 className="font-display text-xl font-bold">Terbantu dengan kitab ini?</h2>
-          <p className="mt-1 text-sm text-paper/70">
+          <p className="mt-1 text-sm text-white/70">
             Checkout lewat link toko di tiap perangkat untuk mendukung reviewer,
             atau traktir via Saweria di bio @fernandagunsan.
           </p>

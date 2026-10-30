@@ -34,19 +34,23 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectItem }) => {
 
   return (
     <div>
-      {/* HERO */}
-      <section className="paper-grain relative overflow-hidden border-b border-ink/10">
+      {/* HERO: panel gelap ala Atlassian, dibingkai confetti dekoratif
+          di tepi atas saja. Sesuai DESIGN.md, tombol utama di panel
+          gelap memakai kuning taksi, satu-satunya tempat CTA kuning
+          muncul, dengan teks navy agar kontrasnya lolos. */}
+      <section className="relative overflow-hidden bg-midnight text-white">
+        <div aria-hidden="true" className="confetti-frame h-2 w-full" />
         <div className="mx-auto max-w-7xl px-4 pb-14 pt-12 sm:px-6 sm:pt-20">
           <div className="max-w-3xl">
-            <p className="eyebrow mb-4 flex items-center gap-2 text-brass-700">
+            <p className="eyebrow mb-4 flex items-center gap-2 text-white/70">
               <BookOpenText className="h-4 w-4" />
               Kitab tier list audiophile
             </p>
             <h1 className="font-display text-4xl font-black leading-[1.05] tracking-tight sm:text-6xl">
               Semua gear audio terbaik,{' '}
-              <span className="text-brass-700">terkurasi dalam satu kitab.</span>
+              <span className="text-taxicab">terkurasi dalam satu kitab.</span>
             </h1>
-            <p className="mt-5 max-w-xl text-base leading-relaxed text-ink-soft sm:text-lg">
+            <p className="mt-5 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg">
               Dari IEM budget sampai endgame, TWS, headphone, hingga DAC —
               diranking jujur oleh reviewer, dan datanya tersinkron otomatis
               dari spreadsheet setiap ada update.
@@ -54,7 +58,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectItem }) => {
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <button
                 onClick={() => navigate({ page: 'catalog' })}
-                className="btn btn-primary group rounded-full shadow-lg"
+                className="btn group rounded-full border-taxicab bg-taxicab text-midnight shadow-lg hover:bg-taxicab/90"
               >
                 <Search className="h-4 w-4" />
                 Jelajahi Katalog
@@ -62,7 +66,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectItem }) => {
               </button>
               <button
                 onClick={() => navigate({ page: 'tierlist' })}
-                className="btn btn-outline rounded-full"
+                className="btn btn-ghost rounded-full border border-white/40 text-white hover:bg-white/10"
               >
                 <Trophy className="h-4 w-4" />
                 Lihat Tier List
@@ -211,9 +215,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectItem }) => {
           ))}
         </div>
 
-        {/* Catatan reviewer */}
-        <div className="mt-8 flex flex-col items-start gap-4 rounded-3xl border border-brass-300 bg-brass-50 p-6 sm:flex-row sm:items-center">
-          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-brass-500 text-white">
+        {/* Catatan reviewer: pita lavender ala Atlassian, teks navy di
+            atasnya, tanpa wadah kartu tambahan di dalamnya. */}
+        <div className="mt-8 flex flex-col items-start gap-4 rounded-3xl border border-lavender bg-lavender p-6 sm:flex-row sm:items-center">
+          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-midnight text-white">
             <ShieldCheck className="h-6 w-6" />
           </span>
           <div className="flex-1">
